@@ -1,9 +1,7 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Tabs } from "expo-router";
-import { Dimensions, View } from "react-native";
+import { View } from "react-native";
 import { C } from "./index.styles";
-
-const screenWidth = Dimensions.get("window").width;
 
 export default function TabLayout() {
   return (
@@ -65,9 +63,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="schedule"
+        name="recharge"
         options={{
-          title: "Schedule",
+          title: "Recharge",
           tabBarIcon: ({ color, focused }) => (
             <View
               style={

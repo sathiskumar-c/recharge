@@ -6,6 +6,7 @@ export default function RootLayout() {
     <>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="view-plans" options={{ headerShown: false }} />
         <Stack.Screen name="recharge" options={{ title: "Recharge" }} />
         <Stack.Screen name="payment" options={{ title: "Payment" }} />
         <Stack.Screen name="edit-name" options={{ headerShown: false }} />

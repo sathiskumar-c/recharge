@@ -1,0 +1,662 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AutoCharge - Plan Details Obsidian Elite</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Base Resets and Variables */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      :root {
+        --background: #131313;
+        --surface: #131313;
+        --surface-container-lowest: #0e0e0e;
+        --surface-container-low: #1c1b1b;
+        --surface-container-high: #2a2a2a;
+        --surface-container-highest: #353534;
+        --primary: #dbe2ff;
+        --primary-fixed-dim: #b3c5ff;
+        --secondary: #4edea3;
+        --tertiary: #ffddb8;
+        --on-surface: #e5e2e1;
+        --on-surface-variant: #c5c6d0;
+        --border-white-low: rgba(255, 255, 255, 0.08);
+        --outline-variant: #45464f;
+        --radius-xl: 12px;
+        --radius-2xl: 24px;
+        --radius-3xl: 32px;
+        --margin-mobile: 20px;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--background);
+        color: var(--on-surface);
+        line-height: 1.5;
+        overflow: hidden;
+        height: 100vh;
+        width: 100vw;
+      }
+
+      /* Layout Components */
+      .screen-container {
+        position: relative;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.9);
+        z-index: 40;
+      }
+
+      .bottom-sheet {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 50;
+        background-color: var(--surface-container-lowest);
+        border-top-left-radius: var(--radius-3xl);
+        border-top-right-radius: var(--radius-3xl);
+        display: flex;
+        flex-direction: column;
+        max-height: 92vh;
+        box-shadow: 0 -12px 64px rgba(0, 0, 0, 0.9);
+        animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        border-top: 1px solid var(--border-white-low);
+        border-left: 1px solid var(--border-white-low);
+        border-right: 1px solid var(--border-white-low);
+      }
+
+      @keyframes slideUp {
+        from {
+          transform: translateY(100%);
+        }
+        to {
+          transform: translateY(0);
+        }
+      }
+
+      .drag-handle-container {
+        display: flex;
+        justify-content: center;
+        padding-top: 16px;
+        padding-bottom: 4px;
+      }
+
+      .drag-handle {
+        width: 40px;
+        height: 6px;
+        background-color: var(--surface-container-highest);
+        border-radius: 100px;
+      }
+
+      /* Header */
+      .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px var(--margin-mobile);
+        border-bottom: 1px solid var(--border-white-low);
+      }
+
+      .modal-title {
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+      }
+
+      .close-button {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: var(--surface-container-high);
+        border: 1px solid var(--border-white-low);
+        color: var(--on-surface);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      /* Content Area */
+      .scroll-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 24px var(--margin-mobile) 140px var(--margin-mobile);
+      }
+
+      /* Obsidian Cards */
+      .obsidian-card {
+        background-color: var(--surface-container-low);
+        border-radius: var(--radius-2xl);
+        padding: 24px;
+        border: 1px solid var(--border-white-low);
+        box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.03);
+        margin-bottom: 32px;
+      }
+
+      .pricing-hero {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .price-display {
+        display: flex;
+        align-items: baseline;
+        gap: 4px;
+      }
+
+      .price-amount {
+        font-size: 48px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1;
+      }
+
+      .price-period {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--on-surface-variant);
+      }
+
+      .badge-active {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background-color: var(--surface-container-high);
+        padding: 4px 12px;
+        border-radius: 100px;
+        border: 1px solid rgba(179, 197, 255, 0.2);
+        margin-top: 12px;
+      }
+
+      .badge-text {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--primary-fixed-dim);
+      }
+
+      /* Metric Grid */
+      .metric-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .vault-item {
+        background-color: var(--surface);
+        border-radius: 16px;
+        padding: 16px;
+        border: 1px solid var(--border-white-low);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+      }
+
+      .metric-label {
+        font-size: 10px;
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        color: var(--on-surface-variant);
+        opacity: 0.8;
+        margin-bottom: 4px;
+      }
+
+      .metric-value {
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+      }
+
+      .metric-accent-bar {
+        height: 2px;
+        width: 32px;
+        margin-top: 8px;
+        border-radius: 100px;
+      }
+
+      /* Sections Labels */
+      .section-divider {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+
+      .divider-line {
+        height: 1px;
+        flex: 1;
+        background-color: rgba(69, 70, 79, 0.5);
+      }
+
+      .section-label {
+        font-size: 10px;
+        font-weight: 800;
+        color: var(--on-surface-variant);
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+      }
+
+      /* Icon Grid */
+      .icon-grid {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 8px;
+        margin-bottom: 32px;
+      }
+
+      .icon-unit {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .icon-container {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        background-color: var(--surface);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--border-white-low);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+      }
+
+      .icon-text {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+
+      /* Benefit Items */
+      .benefit-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .benefit-card {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        background-color: var(--surface-container-low);
+        padding: 16px;
+        border-radius: 16px;
+        border: 1px solid var(--border-white-low);
+      }
+
+      .benefit-icon-box {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background-color: var(--surface-container-highest);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .benefit-content {
+        flex: 1;
+      }
+
+      .benefit-title {
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .benefit-subtitle {
+        font-size: 12px;
+        color: var(--on-surface-variant);
+        margin-top: 2px;
+      }
+
+      /* Fine Print */
+      .fine-print-card {
+        background-color: var(--surface-container-low);
+        padding: 16px;
+        border-radius: 16px;
+        border: 1px solid var(--border-white-low);
+        margin-top: 32px;
+        display: flex;
+        gap: 8px;
+      }
+
+      .fine-print-text {
+        font-size: 11px;
+        color: var(--on-surface-variant);
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        font-weight: 500;
+        line-height: 1.4;
+      }
+
+      /* Fixed Footer Action */
+      .footer-action {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 20px;
+        background-color: var(--surface-container-lowest);
+        border-top: 1px solid var(--border-white-low);
+        z-index: 60;
+      }
+
+      .pay-button {
+        width: 100%;
+        height: 64px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #334576 0%, #1b2e5e 100%);
+        border: none;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 32px rgba(0, 0, 0, 0.6);
+        animation: pulseGlow 3s ease-in-out infinite;
+      }
+
+      @keyframes pulseGlow {
+        0%,
+        100% {
+          box-shadow: 0 4px 20px rgba(0, 85, 213, 0.3);
+        }
+        50% {
+          box-shadow: 0 4px 30px rgba(0, 85, 213, 0.5);
+        }
+      }
+
+      .pay-button:active {
+        transform: scale(0.98);
+        filter: brightness(1.1);
+      }
+
+      .pay-button-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+      }
+
+      .pay-button-label {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        opacity: 0.8;
+      }
+
+      .pay-button-value {
+        font-size: 20px;
+        font-weight: 800;
+      }
+
+      .pay-button-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      /* Utilities */
+      .text-primary {
+        color: var(--primary);
+      }
+      .text-secondary {
+        color: var(--secondary);
+      }
+      .text-tertiary {
+        color: var(--tertiary);
+      }
+      .text-outline {
+        color: var(--outline-variant);
+      }
+      .bg-primary-bar {
+        background-color: rgba(219, 226, 255, 0.4);
+      }
+      .bg-secondary-bar {
+        background-color: rgba(78, 222, 163, 0.4);
+      }
+      .glow-icon-p {
+        filter: drop-shadow(0 0 12px rgba(179, 197, 255, 0.4));
+      }
+      .glow-icon-t {
+        filter: drop-shadow(0 0 12px rgba(255, 221, 184, 0.4));
+      }
+      .glow-icon-s {
+        filter: drop-shadow(0 0 12px rgba(78, 222, 163, 0.4));
+      }
+    </style>
+  </head>
+  <body>
+    <div class="screen-container">
+      <!-- Overlay for Modal Background -->
+      <div class="overlay"></div>
+      <!-- Bottom Sheet Modal -->
+      <div class="bottom-sheet">
+        <!-- Drag Handle -->
+        <div class="drag-handle-container">
+          <div class="drag-handle"></div>
+        </div>
+        <!-- Header -->
+        <header class="modal-header">
+          <h2 class="modal-title">Plan Details</h2>
+          <button class="close-button">
+            <span class="material-symbols-outlined" style="font-size: 20px"
+              >close</span
+            >
+          </button>
+        </header>
+        <!-- Content Area -->
+        <div class="scroll-content">
+          <!-- Main Pricing Info -->
+          <section class="obsidian-card">
+            <div class="pricing-hero">
+              <div>
+                <div class="price-display">
+                  <span class="price-amount">₹349</span>
+                  <span class="price-period">/ 28d</span>
+                </div>
+                <div class="badge-active">
+                  <span
+                    class="material-symbols-outlined text-primary"
+                    style="
+                      font-size: 14px;
+                      font-variation-settings: &quot;FILL&quot; 1;
+                    "
+                    >verified</span
+                  >
+                  <span class="badge-text">Active Membership</span>
+                </div>
+              </div>
+              <div class="metric-grid">
+                <div class="vault-item">
+                  <div class="metric-label">Duration</div>
+                  <div class="metric-value">28 Days</div>
+                  <div class="metric-accent-bar bg-primary-bar"></div>
+                </div>
+                <div class="vault-item">
+                  <div class="metric-label">Daily Limit</div>
+                  <div class="metric-value">2.0 GB</div>
+                  <div class="metric-accent-bar bg-secondary-bar"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- Curated Suites Icons -->
+          <section>
+            <div class="section-divider">
+              <div class="divider-line"></div>
+              <h3 class="section-label">Curated Suites</h3>
+              <div class="divider-line"></div>
+            </div>
+            <div class="icon-grid">
+              <div class="icon-unit">
+                <div class="icon-container">
+                  <span
+                    class="material-symbols-outlined text-primary glow-icon-p"
+                    style="font-size: 28px"
+                    >play_circle</span
+                  >
+                </div>
+                <span class="icon-text">JioTV</span>
+              </div>
+              <div class="icon-unit">
+                <div class="icon-container">
+                  <span
+                    class="material-symbols-outlined text-tertiary glow-icon-t"
+                    style="font-size: 28px"
+                    >cloud_done</span
+                  >
+                </div>
+                <span class="icon-text">Cloud</span>
+              </div>
+              <div class="icon-unit">
+                <div class="icon-container">
+                  <span
+                    class="material-symbols-outlined text-secondary glow-icon-s"
+                    style="font-size: 28px"
+                    >movie_filter</span
+                  >
+                </div>
+                <span class="icon-text">Cinema</span>
+              </div>
+              <div class="icon-unit">
+                <div class="icon-container">
+                  <span
+                    class="material-symbols-outlined text-primary-fixed-dim glow-icon-p"
+                    style="font-size: 28px"
+                    >music_note</span
+                  >
+                </div>
+                <span class="icon-text">Saavn</span>
+              </div>
+            </div>
+          </section>
+          <!-- Infrastructure Access -->
+          <section>
+            <div class="section-divider">
+              <h3 class="section-label">Infrastructure Access</h3>
+            </div>
+            <div class="benefit-list">
+              <div class="benefit-card">
+                <div class="benefit-icon-box">
+                  <span
+                    class="material-symbols-outlined text-secondary"
+                    style="font-size: 24px"
+                    >5g</span
+                  >
+                </div>
+                <div class="benefit-content">
+                  <div class="benefit-title">Unlimited True 5G</div>
+                  <div class="benefit-subtitle">
+                    Premier low-latency bandwidth
+                  </div>
+                </div>
+              </div>
+              <div class="benefit-card">
+                <div class="benefit-icon-box">
+                  <span
+                    class="material-symbols-outlined text-primary"
+                    style="font-size: 24px"
+                    >settings_phone</span
+                  >
+                </div>
+                <div class="benefit-content">
+                  <div class="benefit-title">HD Voice Calls</div>
+                  <div class="benefit-subtitle">
+                    Unlimited nationwide crystal-clear calling
+                  </div>
+                </div>
+              </div>
+              <div class="benefit-card">
+                <div class="benefit-icon-box">
+                  <span
+                    class="material-symbols-outlined text-outline"
+                    style="font-size: 24px"
+                    >all_inbox</span
+                  >
+                </div>
+                <div class="benefit-content">
+                  <div class="benefit-title">Digital Messaging</div>
+                  <div class="benefit-subtitle">100 SMS quota per cycle</div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!-- Fine Print -->
+          <div class="fine-print-card">
+            <span
+              class="material-symbols-outlined"
+              style="font-size: 16px; color: var(--on-surface-variant)"
+              >info</span
+            >
+            <ul class="fine-print-text">
+              <li>
+                FUP applies: Data speed resets to 64 Kbps after daily quota.
+              </li>
+              <li>
+                5G availability is subject to network coverage and compatible
+                devices.
+              </li>
+              <li>
+                All plans include regulatory taxes and standard service
+                agreements.
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- Footer Action Button -->
+        <div class="footer-action">
+          <button class="pay-button">
+            <div class="pay-button-content">
+              <span class="pay-button-label">Authorize Transaction</span>
+              <span class="pay-button-value">Pay ₹349.00</span>
+            </div>
+            <div class="pay-button-icon">
+              <span class="material-symbols-outlined" style="font-size: 24px"
+                >arrow_forward_ios</span
+              >
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

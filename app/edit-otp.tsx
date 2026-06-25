@@ -105,7 +105,7 @@ export default function EditOtpScreen() {
             </View>
             <Text style={styles.title}>Verify Your Identity</Text>
             <Text style={styles.description}>
-              We've sent a 4-digit code to{"\n"}
+              We&apos;ve sent a 4-digit code to{"\n"}
               <Text style={{ color: C.primary, fontWeight: "600" }}>
                 a***.h@autocharge.pro
               </Text>
@@ -183,7 +183,9 @@ export default function EditOtpScreen() {
             </TouchableOpacity>
 
             <View style={styles.resendContainer}>
-              <Text style={styles.resendText}>Didn't receive the code?</Text>
+              <Text style={styles.resendText}>
+                Didn&apos;t receive the code?
+              </Text>
               <TouchableOpacity onPress={handleResendOtp} disabled={verifying}>
                 <Text style={styles.resendButton}>Resend OTP</Text>
               </TouchableOpacity>
@@ -196,8 +198,8 @@ export default function EditOtpScreen() {
               <MaterialIcons name="info" size={16} color={C.secondary} />
             </View>
             <Text style={styles.securityText}>
-              Security Tip: Ensure you're on a secure network. AutoCharge will
-              never ask for your password via email.
+              Security Tip: Ensure you&apos;re on a secure network. AutoCharge
+              will never ask for your password via email.
             </Text>
           </View>
         </View>

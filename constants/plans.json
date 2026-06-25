@@ -1,0 +1,305 @@
+{
+  "popular": [
+    {
+      "id": "p1",
+      "price": 899,
+      "title": "True 5G Unlimited Plan",
+      "validity": "90 Days",
+      "data": "2 GB/Day",
+      "voice": "Unlimited",
+      "benefits": ["data", "network-check", "verified"],
+      "recommended": true,
+      "tags": ["5g", "unlimited calls", "long validity", "high data"]
+    },
+    {
+      "id": "p2",
+      "price": 399,
+      "title": "Sports+Gaming+Movie+Hollywood",
+      "validity": "28 Days",
+      "data": "2.5 GB/Day",
+      "label": "Sports+Gaming+Movie+Hollywood",
+      "labelColor": "#4edea3",
+      "serviceIcons": ["sports_esports", "movie", "star"],
+      "serviceIconsMore": 2,
+      "tags": ["entertainment", "ott", "gaming", "sports"]
+    },
+    {
+      "id": "p3",
+      "price": 200,
+      "title": "OTT Pass-15 OTT+1000 TV Channels",
+      "validity": "28 Days",
+      "data": "30 GB",
+      "label": "OTT Pass-15 OTT+1000 TV Channels",
+      "labelColor": "#ffddb8",
+      "serviceIcons": ["play_arrow", "shopping_cart", "tv"],
+      "serviceIconsMore": 12,
+      "tags": ["ott", "entertainment", "tv channels", "video"]
+    },
+    {
+      "id": "p4",
+      "price": 3599,
+      "title": "5G + AI + Movies + Hollywood",
+      "validity": "365 Days",
+      "data": "2.5 GB/Day",
+      "label": "5G + AI + Movies + Hollywood",
+      "labelColor": "#dbe2ff",
+      "serviceIcons": ["memory", "network_check"],
+      "serviceIconsMore": 2,
+      "tags": ["5g", "long validity", "entertainment", "ott"]
+    }
+  ],
+  "true5g": [
+    {
+      "id": "5g1",
+      "price": 599,
+      "title": "5G Ultra Speed Plan",
+      "validity": "30 Days",
+      "data": "3 GB/Day",
+      "voice": "Unlimited",
+      "recommended": true,
+      "tags": ["5g", "unlimited calls", "high data", "speed"]
+    },
+    {
+      "id": "5g2",
+      "price": 999,
+      "title": "5G Premium Plan",
+      "validity": "90 Days",
+      "data": "5 GB/Day",
+      "voice": "Unlimited",
+      "benefits": ["memory", "network-check", "verified"],
+      "serviceIcons": ["memory", "network_check", "verified"],
+      "tags": ["5g", "unlimited calls", "long validity", "premium", "high data"]
+    },
+    {
+      "id": "5g3",
+      "price": 1999,
+      "title": "5G Max Plan",
+      "validity": "180 Days",
+      "data": "10 GB/Day",
+      "voice": "Unlimited",
+      "serviceIcons": ["memory", "network_check", "star"],
+      "serviceIconsMore": 5,
+      "tags": [
+        "5g",
+        "unlimited calls",
+        "very long validity",
+        "max data",
+        "premium"
+      ]
+    },
+    {
+      "id": "5g4",
+      "price": 499,
+      "title": "5G Standard Plan",
+      "validity": "28 Days",
+      "data": "2 GB/Day",
+      "voice": "Unlimited",
+      "serviceIcons": ["memory", "network_check"],
+      "tags": ["5g", "unlimited calls", "budget", "standard"]
+    },
+    {
+      "id": "5g5",
+      "price": 749,
+      "title": "5G Plus Plan",
+      "validity": "60 Days",
+      "data": "4 GB/Day",
+      "voice": "Unlimited",
+      "serviceIcons": ["memory", "network_check", "star"],
+      "tags": ["5g", "unlimited calls", "medium validity", "good data"]
+    }
+  ],
+  "dataPacks": [
+    {
+      "id": "data1",
+      "price": 98,
+      "title": "Quick Data Top-up",
+      "validity": "7 Days",
+      "data": "1.5 GB",
+      "recommended": true,
+      "tags": ["short validity", "budget", "data only"]
+    },
+    {
+      "id": "data2",
+      "price": 199,
+      "title": "Standard Data Pack",
+      "validity": "14 Days",
+      "data": "5 GB",
+      "serviceIcons": ["memory"],
+      "tags": ["medium validity", "data only", "good value"]
+    },
+    {
+      "id": "data3",
+      "price": 349,
+      "title": "Plus Data Pack",
+      "validity": "28 Days",
+      "data": "12 GB",
+      "serviceIcons": ["memory", "network_check"],
+      "tags": ["long validity", "data only", "high data", "good value"]
+    },
+    {
+      "id": "data4",
+      "price": 599,
+      "title": "Premium Data Bundle",
+      "validity": "60 Days",
+      "data": "30 GB",
+      "serviceIcons": ["memory", "network_check", "star"],
+      "serviceIconsMore": 3,
+      "tags": ["very long validity", "data only", "premium", "high data"]
+    },
+    {
+      "id": "data5",
+      "price": 79,
+      "title": "Lite Data",
+      "validity": "3 Days",
+      "data": "500 MB",
+      "serviceIcons": ["memory"],
+      "tags": ["short validity", "budget", "lite", "data only"]
+    }
+  ],
+  "annual": [
+    {
+      "id": "annual1",
+      "price": 4999,
+      "title": "Annual Supreme Plan",
+      "validity": "365 Days",
+      "data": "3 GB/Day",
+      "voice": "Unlimited",
+      "recommended": true,
+      "tags": [
+        "long validity",
+        "unlimited calls",
+        "premium",
+        "annual",
+        "high data"
+      ]
+    },
+    {
+      "id": "annual2",
+      "price": 3999,
+      "title": "Annual Pro Plan",
+      "validity": "365 Days",
+      "data": "2.5 GB/Day",
+      "voice": "Unlimited",
+      "serviceIcons": ["memory", "network_check", "star"],
+      "tags": ["long validity", "unlimited calls", "premium", "annual"]
+    },
+    {
+      "id": "annual3",
+      "price": 2999,
+      "title": "Annual Standard Plan",
+      "validity": "365 Days",
+      "data": "1.5 GB/Day",
+      "voice": "Unlimited",
+      "serviceIcons": ["memory", "network_check"],
+      "tags": ["long validity", "unlimited calls", "budget", "annual"]
+    },
+    {
+      "id": "annual4",
+      "price": 5999,
+      "title": "Annual Enterprise Plan",
+      "validity": "365 Days",
+      "data": "5 GB/Day",
+      "voice": "Unlimited",
+      "benefits": ["data", "network-check", "verified"],
+      "serviceIcons": ["data_saver", "network_check", "verified"],
+      "serviceIconsMore": 4,
+      "tags": [
+        "long validity",
+        "unlimited calls",
+        "enterprise",
+        "annual",
+        "premium",
+        "high data"
+      ]
+    }
+  ],
+  "roaming": [
+    {
+      "id": "roam1",
+      "price": 599,
+      "title": "Global Roaming Basic",
+      "validity": "30 Days",
+      "data": "2 GB",
+      "voice": "200 Minutes",
+      "serviceIcons": ["public", "call"],
+      "tags": ["roaming", "international", "calls", "budget"]
+    },
+    {
+      "id": "roam2",
+      "price": 1299,
+      "title": "Global Roaming Pro",
+      "validity": "30 Days",
+      "data": "5 GB",
+      "voice": "500 Minutes",
+      "serviceIcons": ["public", "call", "star"],
+      "serviceIconsMore": 2,
+      "tags": [
+        "roaming",
+        "international",
+        "calls",
+        "unlimited calls",
+        "premium"
+      ]
+    },
+    {
+      "id": "roam3",
+      "price": 299,
+      "title": "Roaming Data Add-on",
+      "validity": "7 Days",
+      "data": "1 GB",
+      "serviceIcons": ["public"],
+      "tags": ["roaming", "international", "data only", "short validity"]
+    }
+  ],
+  "combos": [
+    {
+      "id": "combo1",
+      "price": 449,
+      "title": "Data + SMS Combo",
+      "validity": "28 Days",
+      "data": "3 GB/Day",
+      "voice": "100 SMS/Day",
+      "serviceIcons": ["memory", "mail"],
+      "tags": ["combo", "data", "sms", "good value"]
+    },
+    {
+      "id": "combo2",
+      "price": 749,
+      "title": "Unlimited + OTT Combo",
+      "validity": "28 Days",
+      "data": "2.5 GB/Day",
+      "voice": "Unlimited",
+      "serviceIcons": ["call", "movie", "play_arrow"],
+      "serviceIconsMore": 3,
+      "tags": ["combo", "unlimited calls", "ott", "entertainment", "premium"]
+    },
+    {
+      "id": "combo3",
+      "price": 899,
+      "title": "5G + Entertainment Bundle",
+      "validity": "30 Days",
+      "data": "4 GB/Day",
+      "voice": "Unlimited",
+      "serviceIcons": ["memory", "network_check", "movie", "star"],
+      "serviceIconsMore": 4,
+      "tags": [
+        "combo",
+        "5g",
+        "unlimited calls",
+        "ott",
+        "entertainment",
+        "high data"
+      ]
+    },
+    {
+      "id": "combo4",
+      "price": 299,
+      "title": "Budget Combo Pack",
+      "validity": "30 Days",
+      "data": "1.5 GB/Day",
+      "voice": "50 Minutes/Day",
+      "serviceIcons": ["memory", "call"],
+      "tags": ["combo", "budget", "low cost", "calls", "data"]
+    }
+  ]
+}
