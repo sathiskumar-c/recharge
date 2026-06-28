@@ -1,0 +1,23 @@
+{
+  "profile": {
+    "name": "Alex",
+    "email": "alex.h@autocharge.pro",
+    "phone": "+1 (555) 012-3456",
+    "avatar": "https://lh3.googleusercontent.com/aida-public/AB6AXuDQeGDJkR4AiaLgJuK8BkrL1-JImpJW_ESu_sVgppOjGtdIsZKElLtuhAnaPkqzFeRpCyTe1PJ4OK2qiLX6uv6sfBfX3sncp0Wd0UVbxX6OEbGBMNURAAJYASNL97tXjRtEYRJgZ5pGdM8UsDqm0-ld8CALVnRaZsuAHdr6C5xzHZkRVKKryptQ-23c0sWE9nDg-70IZB_Sr1CxQLLv6RfHMCX0pJWpq5SMp-zhFH_1C0fAfLCbEQi3T9zPC_KmheOnzgmMxbpStzc",
+    "headerAvatar": "https://lh3.googleusercontent.com/aida-public/AB6AXuDoYrCIoQN_lPwhAsDs1JfW9lMxdL4rSREkdLMYoO85Ddin654--5MPxCfg38q16Lx5doYqxKz1pq2YE0Fl1218LUxyF1-M7s591DngRAgmlVmGVxiD0xSSKQcO4Mg-iCKFRMq0VA0MspA2tq6ORYxpbCxDV6f26gCbl6FduBMxXO53Lzk0X5g3c3jtgRUqJWjfoJ1HxV-jvANNkrKdWnY1gqCtHXt6XfsmgC30yt28u4dIzS4rHKi3zGP5E6F0diLrQGceu2FoGQM"
+  },
+  "cards": {
+    "primary": {
+      "mask": "Visa •••• 4242",
+      "expiry": "Expires 09/26"
+    }
+  },
+  "wallet": {
+    "balance": "142.50"
+  },
+  "toggles": {
+    "biometricEnabled": true,
+    "notificationsEnabled": false
+  },
+  "version": "4.2.0-pro"
+}

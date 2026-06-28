@@ -4,18 +4,15 @@ import { StatusBar } from "expo-status-bar";
 export default function RootLayout() {
   return (
     <>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="view-plans" options={{ headerShown: false }} />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="view-plans" />
         <Stack.Screen name="recharge" options={{ title: "Recharge" }} />
         <Stack.Screen name="payment" options={{ title: "Payment" }} />
-        <Stack.Screen name="edit-name" options={{ headerShown: false }} />
-        <Stack.Screen name="edit-email" options={{ headerShown: false }} />
-        <Stack.Screen name="edit-otp" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="edit-otp-success"
-          options={{ headerShown: false }}
-        />
+        <Stack.Screen name="edit-name" />
+        <Stack.Screen name="edit-email" />
+        <Stack.Screen name="edit-otp" />
+        <Stack.Screen name="edit-otp-success" />
       </Stack>
       <StatusBar style="auto" />
     </>

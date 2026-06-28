@@ -1,0 +1,738 @@
+<!doctype html>
+
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Transaction History - AutoCharge</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Reset & Base Styles */
+      :root {
+        --background: #131313;
+        --on-background: #e5e2e1;
+        --primary: #dbe2ff;
+        --primary-fixed: #dbe1ff;
+        --primary-container: #b3c5ff;
+        --on-primary-container: #3f5183;
+        --surface-glass: rgba(26, 26, 26, 0.7);
+        --border-white-low: rgba(255, 255, 255, 0.08);
+        --surface-container-high: #2a2a2a;
+        --on-surface-variant: #c5c6d0;
+        --surface-container-lowest: #0e0e0e;
+        --surface-variant: #353534;
+        --surface-container-highest: #353534;
+        --secondary: #4edea3;
+        --secondary-container: #00b47d;
+        --tertiary: #ffddb8;
+        --tertiary-container: #ffb95f;
+        --error: #ffb4ab;
+        --error-container: #93000a;
+
+        --glow-primary: rgba(179, 197, 255, 0.4);
+        --glow-success: rgba(78, 222, 163, 0.2);
+        --glow-pending: rgba(255, 185, 95, 0.2);
+        --glow-failed: rgba(255, 180, 171, 0.2);
+
+        --spacing-xs: 4px;
+        --spacing-sm: 8px;
+        --spacing-md: 16px;
+        --spacing-lg: 24px;
+        --spacing-xl: 32px;
+        --margin-mobile: 20px;
+        --margin-desktop: 40px;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--background);
+        color: var(--on-background);
+        min-height: max(884px, 100dvh);
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 400;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      ::selection {
+        background-color: var(--primary-container);
+        color: var(--on-primary-container);
+      }
+
+      a,
+      button {
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
+        background: none;
+        font-family: inherit;
+      }
+
+      /* Typography */
+      .font-headline-md {
+        font-size: 24px;
+        line-height: 32px;
+        letter-spacing: -0.01em;
+        font-weight: 600;
+      }
+      .font-headline-lg-mobile {
+        font-size: 28px;
+        line-height: 36px;
+        letter-spacing: -0.02em;
+        font-weight: 700;
+      }
+      .font-label-md {
+        font-size: 14px;
+        line-height: 20px;
+        letter-spacing: 0.01em;
+        font-weight: 500;
+      }
+      .font-label-sm {
+        font-size: 12px;
+        line-height: 16px;
+        letter-spacing: 0.02em;
+        font-weight: 500;
+      }
+      .font-data-bold {
+        font-size: 18px;
+        line-height: 24px;
+        letter-spacing: -0.01em;
+        font-weight: 700;
+      }
+      .font-caption-xs {
+        font-size: 10px;
+        line-height: 12px;
+        letter-spacing: 0.05em;
+        font-weight: 700;
+      }
+
+      /* Layout & Components */
+      .top-app-bar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 50;
+        background: var(--surface-glass);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border-bottom: 1px solid var(--border-white-low);
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      }
+
+      .top-app-bar-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--spacing-sm) var(--margin-mobile);
+      }
+      @media (min-width: 768px) {
+        .top-app-bar-inner {
+          padding: var(--spacing-sm) var(--margin-desktop);
+        }
+      }
+
+      .app-title-container {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        color: var(--primary);
+      }
+
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 9999px;
+        overflow: hidden;
+        border: 1px solid var(--border-white-low);
+        background-color: var(--surface-container-high);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .user-avatar .material-symbols-outlined {
+        color: var(--on-surface-variant);
+      }
+
+      .main-content {
+        padding-top: 80px;
+        padding-bottom: 100px;
+        padding-left: var(--margin-mobile);
+        padding-right: var(--margin-mobile);
+        max-width: 896px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xl);
+      }
+      @media (min-width: 768px) {
+        .main-content {
+          padding-left: var(--margin-desktop);
+          padding-right: var(--margin-desktop);
+        }
+        .font-headline-lg-mobile {
+          font-size: 32px;
+          line-height: 40px;
+        }
+      }
+
+      .section-header {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+        padding-top: var(--spacing-md);
+      }
+      .section-subtitle {
+        color: var(--on-surface-variant);
+        margin-top: var(--spacing-sm);
+      }
+
+      /* Search Bar */
+      .search-container {
+        position: relative;
+        width: 100%;
+      }
+      .search-icon-wrapper {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        padding-left: var(--spacing-md);
+        display: flex;
+        align-items: center;
+        pointer-events: none;
+      }
+      .search-icon {
+        color: var(--on-surface-variant);
+        transition: color 0.2s;
+      }
+      .search-container:focus-within .search-icon {
+        color: var(--primary);
+      }
+
+      .glass-input {
+        width: 100%;
+        background: var(--surface-container-lowest);
+        border: 1px solid var(--border-white-low);
+        border-radius: 0.5rem;
+        padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) 48px;
+        color: var(--on-background);
+        transition: all 0.2s;
+        font-family: inherit;
+        font-size: 16px;
+        line-height: 24px;
+      }
+      .glass-input::placeholder {
+        color: var(--on-surface-variant);
+      }
+      .glass-input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 1px var(--primary);
+      }
+
+      /* Filter Chips */
+      .filter-chips {
+        display: flex;
+        gap: var(--spacing-sm);
+        overflow-x: auto;
+        padding-top: var(--spacing-sm);
+        padding-bottom: var(--spacing-sm);
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      .filter-chips::-webkit-scrollbar {
+        display: none;
+      }
+
+      .chip {
+        white-space: nowrap;
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-radius: 9999px;
+        transition: all 0.2s;
+        cursor: pointer;
+      }
+      .chip:active {
+        transform: scale(0.95);
+      }
+
+      .chip.active {
+        background-color: var(--primary-container);
+        color: var(--on-primary-container);
+        border: 1px solid var(--primary-container);
+        box-shadow: 0 0 10px var(--glow-primary);
+      }
+      .chip.inactive {
+        background: var(--surface-glass);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid var(--border-white-low);
+        color: var(--on-surface-variant);
+      }
+      .chip.inactive:hover {
+        color: var(--on-background);
+        background-color: var(--surface-variant);
+      }
+
+      /* Transactions */
+      .transaction-list-section {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+      }
+
+      .date-header {
+        color: var(--on-surface-variant);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: var(--spacing-sm);
+      }
+      .date-header.mt-md {
+        margin-top: var(--spacing-md);
+      }
+
+      .glass-card {
+        background: var(--surface-glass);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid var(--border-white-low);
+        border-radius: 0.75rem;
+        padding: var(--spacing-md);
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+        transition: background-color 0.2s;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+      }
+      .glass-card:hover {
+        background-color: var(--surface-variant);
+      }
+
+      .card-highlight-top {
+        border-top: 1px solid rgba(179, 197, 255, 0.2);
+      }
+      .card-border-l-tertiary {
+        border-left: 2px solid var(--tertiary);
+      }
+      .card-border-l-error {
+        border-left: 2px solid var(--error);
+      }
+
+      .card-bg-gradient {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        transition: opacity 0.2s;
+        pointer-events: none;
+      }
+      .glass-card:hover .card-bg-gradient {
+        opacity: 1;
+      }
+      .bg-gradient-success {
+        background: linear-gradient(
+          to right,
+          rgba(0, 180, 125, 0.05),
+          transparent
+        );
+      }
+      .bg-gradient-pending {
+        background: linear-gradient(
+          to right,
+          rgba(255, 185, 95, 0.05),
+          transparent
+        );
+      }
+
+      .card-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
+        position: relative;
+        z-index: 10;
+      }
+      .card-row.opacity-75 {
+        opacity: 0.75;
+      }
+      .card-row.center {
+        align-items: center;
+      }
+      .card-row.pt-sm {
+        padding-top: var(--spacing-sm);
+        border-top: 1px solid var(--border-white-low);
+      }
+
+      .entity-info {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+      }
+
+      .entity-logo {
+        width: 48px;
+        height: 48px;
+        border-radius: 9999px;
+        background-color: var(--surface-container-highest);
+        border: 1px solid var(--border-white-low);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      .logo-shadow {
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+      }
+
+      .entity-text {
+        display: flex;
+        flex-direction: column;
+      }
+      .entity-name {
+        font-weight: 500;
+      }
+      .entity-sub {
+        color: var(--on-surface-variant);
+      }
+
+      .amount-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+      .amount-time {
+        color: var(--on-surface-variant);
+        margin-top: var(--spacing-xs);
+      }
+      .line-through {
+        text-decoration: line-through;
+        color: var(--on-surface-variant);
+      }
+
+      .status-badge {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border-radius: 9999px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 9999px;
+      }
+
+      .status-success {
+        background-color: rgba(0, 180, 125, 0.1);
+        border: 1px solid rgba(78, 222, 163, 0.2);
+        box-shadow: 0 0 20px var(--glow-success);
+        color: var(--secondary);
+      }
+      .status-success .status-dot {
+        background-color: var(--secondary);
+      }
+
+      .status-pending {
+        background-color: rgba(255, 185, 95, 0.1);
+        border: 1px solid rgba(255, 221, 184, 0.2);
+        box-shadow: 0 0 20px var(--glow-pending);
+        color: var(--tertiary);
+      }
+      .status-pending .status-dot {
+        background-color: var(--tertiary);
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+
+      .status-failed {
+        background-color: rgba(147, 0, 10, 0.1);
+        border: 1px solid rgba(255, 180, 171, 0.2);
+        box-shadow: 0 0 20px var(--glow-failed);
+        color: var(--error);
+      }
+      .status-failed .status-dot {
+        background-color: var(--error);
+      }
+
+      .action-btn {
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        transition: color 0.2s;
+      }
+      .action-btn:hover {
+        color: var(--primary-fixed);
+      }
+      .action-icon {
+        font-size: 16px;
+      }
+
+      .load-more-container {
+        display: flex;
+        justify-content: center;
+        margin-top: var(--spacing-md);
+      }
+      .btn-load-more {
+        padding: var(--spacing-sm) var(--spacing-lg);
+        border-radius: 9999px;
+        background: var(--surface-glass);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid var(--border-white-low);
+        color: var(--on-surface-variant);
+        transition: all 0.2s;
+      }
+      .btn-load-more:hover {
+        color: var(--on-background);
+        background-color: var(--surface-variant);
+      }
+
+      /* Bottom Navigation */
+      .bottom-nav {
+        position: fixed;
+        bottom: var(--spacing-lg);
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 40px);
+        max-width: 28rem;
+        border-radius: 9999px;
+        z-index: 50;
+        background: var(--surface-glass);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      }
+      @media (min-width: 768px) {
+        .bottom-nav {
+          display: none;
+        }
+      }
+
+      .bottom-nav-inner {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: var(--spacing-md) var(--spacing-lg);
+      }
+
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+      }
+      .nav-item:active {
+        transform: scale(0.9);
+      }
+
+      .nav-item.inactive {
+        color: var(--on-surface-variant);
+        opacity: 0.6;
+      }
+      .nav-item.inactive:hover {
+        opacity: 1;
+      }
+
+      .nav-item.active {
+        color: var(--secondary);
+        filter: drop-shadow(0 0 8px rgba(78, 222, 163, 0.5));
+      }
+      .nav-item.active:hover {
+        opacity: 1;
+      }
+
+      .nav-label {
+        margin-top: var(--spacing-xs);
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top-app-bar">
+      <div class="top-app-bar-inner">
+        <div class="app-title-container">
+          <span
+            class="material-symbols-outlined"
+            style="font-variation-settings: &quot;FILL&quot; 1"
+            >bolt</span
+          >
+          <h1 class="font-headline-md">AutoCharge</h1>
+        </div>
+        <div class="user-avatar">
+          <span class="material-symbols-outlined">person</span>
+        </div>
+      </div>
+    </header>
+    <main class="main-content">
+      <section class="section-header">
+        <div>
+          <h2 class="font-headline-lg-mobile">Transaction History</h2>
+          <p class="font-label-md section-subtitle">
+            Review your past recharges and bill payments.
+          </p>
+        </div>
+        <div class="search-container group">
+          <div class="search-icon-wrapper">
+            <span class="material-symbols-outlined search-icon">search</span>
+          </div>
+          <input
+            class="glass-input"
+            placeholder="Search by number or name..."
+            type="text"
+          />
+        </div>
+        <div class="filter-chips">
+          <button class="chip active font-label-md">All Transactions</button>
+          <button class="chip inactive font-label-md">Successful</button>
+          <button class="chip inactive font-label-md">Pending</button>
+          <button class="chip inactive font-label-md">Failed</button>
+        </div>
+      </section>
+      <section class="transaction-list-section">
+        <h3 class="font-label-md date-header">Today</h3>
+        <div class="glass-card card-highlight-top">
+          <div class="card-bg-gradient bg-gradient-success"></div>
+          <div class="card-row">
+            <div class="entity-info">
+              <div class="entity-logo logo-shadow">
+                <span class="font-data-bold text-on-background">Ji</span>
+              </div>
+              <div class="entity-text">
+                <span class="font-label-md entity-name">Jio Prepaid</span>
+                <span class="font-label-sm entity-sub">+91 98765 43210</span>
+              </div>
+            </div>
+            <div class="amount-info">
+              <span class="font-data-bold">₹349</span>
+              <span class="font-caption-xs amount-time">10:42 AM</span>
+            </div>
+          </div>
+          <div class="card-row center pt-sm">
+            <div class="status-badge status-success font-caption-xs">
+              <span class="status-dot"></span>
+              Successful
+            </div>
+            <button class="action-btn font-label-sm">
+              View Receipt
+              <span class="material-symbols-outlined action-icon"
+                >chevron_right</span
+              >
+            </button>
+          </div>
+        </div>
+        <div class="glass-card card-border-l-tertiary">
+          <div class="card-bg-gradient bg-gradient-pending"></div>
+          <div class="card-row">
+            <div class="entity-info">
+              <div class="entity-logo logo-shadow">
+                <span class="font-data-bold text-on-background">Ai</span>
+              </div>
+              <div class="entity-text">
+                <span class="font-label-md entity-name">Airtel Postpaid</span>
+                <span class="font-label-sm entity-sub">Mom</span>
+              </div>
+            </div>
+            <div class="amount-info">
+              <span class="font-data-bold">₹599</span>
+              <span class="font-caption-xs amount-time">08:15 AM</span>
+            </div>
+          </div>
+          <div class="card-row center pt-sm">
+            <div class="status-badge status-pending font-caption-xs">
+              <span class="status-dot"></span>
+              Processing
+            </div>
+            <button class="action-btn font-label-sm">
+              Details
+              <span class="material-symbols-outlined action-icon"
+                >chevron_right</span
+              >
+            </button>
+          </div>
+        </div>
+        <h3 class="font-label-md date-header mt-md">Yesterday</h3>
+        <div class="glass-card card-border-l-error">
+          <div class="card-row opacity-75">
+            <div class="entity-info">
+              <div class="entity-logo">
+                <span class="font-data-bold text-on-background">Vi</span>
+              </div>
+              <div class="entity-text">
+                <span class="font-label-md entity-name">Vi Prepaid</span>
+                <span class="font-label-sm entity-sub">+91 99887 76655</span>
+              </div>
+            </div>
+            <div class="amount-info">
+              <span class="font-data-bold line-through">₹299</span>
+              <span class="font-caption-xs amount-time">06:30 PM</span>
+            </div>
+          </div>
+          <div class="card-row center pt-sm">
+            <div class="status-badge status-failed font-caption-xs">
+              <span class="status-dot"></span>
+              Failed
+            </div>
+            <button class="action-btn font-label-sm">
+              Retry
+              <span class="material-symbols-outlined action-icon">refresh</span>
+            </button>
+          </div>
+        </div>
+        <div class="load-more-container">
+          <button class="btn-load-more font-label-md">
+            Load More Transactions
+          </button>
+        </div>
+      </section>
+    </main>
+    <nav class="bottom-nav">
+      <div class="bottom-nav-inner">
+        <a class="nav-item inactive" href="#">
+          <span class="material-symbols-outlined">home</span>
+          <span class="font-label-sm nav-label">Home</span>
+        </a>
+        <a class="nav-item active" href="#">
+          <span
+            class="material-symbols-outlined"
+            style="font-variation-settings: &quot;FILL&quot; 1"
+            >calendar_today</span
+          >
+          <span class="font-label-sm nav-label">Schedule</span>
+        </a>
+        <a class="nav-item inactive" href="#">
+          <span class="material-symbols-outlined">account_balance_wallet</span>
+          <span class="font-label-sm nav-label">Wallet</span>
+        </a>
+        <a class="nav-item inactive" href="#">
+          <span class="material-symbols-outlined">person</span>
+          <span class="font-label-sm nav-label">Account</span>
+        </a>
+      </div>
+    </nav>
+  </body>
+</html>

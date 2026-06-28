@@ -7,7 +7,7 @@
       "validity": "90 Days",
       "data": "2 GB/Day",
       "voice": "Unlimited",
-      "benefits": ["data", "network-check", "verified"],
+      "benefitKeys": ["unlimited-5g", "hd-voice", "priority-support"],
       "recommended": true,
       "tags": ["5g", "unlimited calls", "long validity", "high data"]
     },
@@ -21,7 +21,8 @@
       "labelColor": "#4edea3",
       "serviceIcons": ["sports_esports", "movie", "star"],
       "serviceIconsMore": 2,
-      "tags": ["entertainment", "ott", "gaming", "sports"]
+      "tags": ["entertainment", "ott", "gaming", "sports"],
+      "benefitKeys": ["ott-access", "gaming", "extra-data"]
     },
     {
       "id": "p3",
@@ -33,7 +34,8 @@
       "labelColor": "#ffddb8",
       "serviceIcons": ["play_arrow", "shopping_cart", "tv"],
       "serviceIconsMore": 12,
-      "tags": ["ott", "entertainment", "tv channels", "video"]
+      "tags": ["ott", "entertainment", "tv channels", "video"],
+      "benefitKeys": ["ott-access", "extra-data"]
     },
     {
       "id": "p4",
@@ -45,7 +47,8 @@
       "labelColor": "#dbe2ff",
       "serviceIcons": ["memory", "network_check"],
       "serviceIconsMore": 2,
-      "tags": ["5g", "long validity", "entertainment", "ott"]
+      "tags": ["5g", "long validity", "entertainment", "ott"],
+      "benefitKeys": ["unlimited-5g", "ott-access", "priority-support"]
     }
   ],
   "true5g": [
@@ -57,7 +60,8 @@
       "data": "3 GB/Day",
       "voice": "Unlimited",
       "recommended": true,
-      "tags": ["5g", "unlimited calls", "high data", "speed"]
+      "tags": ["5g", "unlimited calls", "high data", "speed"],
+      "benefitKeys": ["unlimited-5g", "priority-support"]
     },
     {
       "id": "5g2",
@@ -66,7 +70,7 @@
       "validity": "90 Days",
       "data": "5 GB/Day",
       "voice": "Unlimited",
-      "benefits": ["memory", "network-check", "verified"],
+      "benefitKeys": ["unlimited-5g", "verified-service"],
       "serviceIcons": ["memory", "network_check", "verified"],
       "tags": ["5g", "unlimited calls", "long validity", "premium", "high data"]
     },
@@ -116,7 +120,8 @@
       "validity": "7 Days",
       "data": "1.5 GB",
       "recommended": true,
-      "tags": ["short validity", "budget", "data only"]
+      "tags": ["short validity", "budget", "data only"],
+      "benefitKeys": ["extra-data"]
     },
     {
       "id": "data2",
@@ -125,7 +130,8 @@
       "validity": "14 Days",
       "data": "5 GB",
       "serviceIcons": ["memory"],
-      "tags": ["medium validity", "data only", "good value"]
+      "tags": ["medium validity", "data only", "good value"],
+      "benefitKeys": ["extra-data"]
     },
     {
       "id": "data3",
@@ -134,7 +140,8 @@
       "validity": "28 Days",
       "data": "12 GB",
       "serviceIcons": ["memory", "network_check"],
-      "tags": ["long validity", "data only", "high data", "good value"]
+      "tags": ["long validity", "data only", "high data", "good value"],
+      "benefitKeys": ["extra-data", "daily-cap"]
     },
     {
       "id": "data4",
@@ -171,7 +178,8 @@
         "premium",
         "annual",
         "high data"
-      ]
+      ],
+      "benefitKeys": ["unlimited-5g", "priority-support"]
     },
     {
       "id": "annual2",
@@ -200,7 +208,7 @@
       "validity": "365 Days",
       "data": "5 GB/Day",
       "voice": "Unlimited",
-      "benefits": ["data", "network-check", "verified"],
+      "benefitKeys": ["priority-support", "verified-service", "extra-data"],
       "serviceIcons": ["data_saver", "network_check", "verified"],
       "serviceIconsMore": 4,
       "tags": [
@@ -222,7 +230,8 @@
       "data": "2 GB",
       "voice": "200 Minutes",
       "serviceIcons": ["public", "call"],
-      "tags": ["roaming", "international", "calls", "budget"]
+      "tags": ["roaming", "international", "calls", "budget"],
+      "benefitKeys": ["roaming"]
     },
     {
       "id": "roam2",
@@ -260,7 +269,8 @@
       "data": "3 GB/Day",
       "voice": "100 SMS/Day",
       "serviceIcons": ["memory", "mail"],
-      "tags": ["combo", "data", "sms", "good value"]
+      "tags": ["combo", "data", "sms", "good value"],
+      "benefitKeys": ["extra-data", "sms-bundle"]
     },
     {
       "id": "combo2",
@@ -271,7 +281,8 @@
       "voice": "Unlimited",
       "serviceIcons": ["call", "movie", "play_arrow"],
       "serviceIconsMore": 3,
-      "tags": ["combo", "unlimited calls", "ott", "entertainment", "premium"]
+      "tags": ["combo", "unlimited calls", "ott", "entertainment", "premium"],
+      "benefitKeys": ["ott-access", "extra-data"]
     },
     {
       "id": "combo3",
@@ -289,7 +300,8 @@
         "ott",
         "entertainment",
         "high data"
-      ]
+      ],
+      "benefitKeys": ["unlimited-5g", "ott-access"]
     },
     {
       "id": "combo4",

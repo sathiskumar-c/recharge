@@ -1,0 +1,564 @@
+<!doctype html>
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>AutoCharge - Support Center</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #0e0e0e;
+        color: #e5e2e1;
+        font-family: "Inter", sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      .app-container {
+        width: 100%;
+        max-width: 896px;
+        margin: 0 auto;
+        padding-bottom: 120px;
+      }
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 20px;
+        background-color: #0e0e0e;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        position: sticky;
+        top: 0;
+        z-index: 50;
+      }
+      .header-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #e5e2e1;
+        margin: 0;
+      }
+      .icon-btn {
+        background: none;
+        border: none;
+        color: #8f909a;
+        cursor: pointer;
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9999px;
+        transition:
+          color 0.2s,
+          background-color 0.2s;
+      }
+      .icon-btn:hover {
+        color: #e5e2e1;
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+      .content-area {
+        padding: 24px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+      }
+
+      /* Search */
+      .search-container {
+        position: relative;
+      }
+      .search-input {
+        width: 100%;
+        padding: 16px 16px 16px 52px;
+        background-color: #1c1b1b;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        color: #e5e2e1;
+        font-size: 16px;
+        box-sizing: border-box;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+      .search-input:focus {
+        outline: none;
+        border-color: #b3c5ff;
+        box-shadow: 0 0 0 2px rgba(179, 197, 255, 0.1);
+      }
+      .search-input::placeholder {
+        color: #8f909a;
+      }
+      .search-icon {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #8f909a;
+      }
+
+      /* Section Headings */
+      .section-title {
+        font-size: 18px;
+        font-weight: 700;
+        margin: 0 0 20px 0;
+        color: #e5e2e1;
+        letter-spacing: -0.01em;
+      }
+
+      /* Categories List */
+      .category-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .cat-item {
+        background-color: #1c1b1b;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        transition:
+          background-color 0.2s,
+          border-color 0.2s;
+        cursor: pointer;
+      }
+      .cat-item:hover {
+        background-color: #201f1f;
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+      .cat-icon-wrapper {
+        background-color: #0e0e0e;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #b3c5ff;
+      }
+      .cat-content {
+        flex: 1;
+      }
+      .cat-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #e5e2e1;
+        margin: 0 0 4px 0;
+      }
+      .cat-count {
+        font-size: 14px;
+        color: #8f909a;
+        margin: 0;
+      }
+      .cat-arrow {
+        color: #45464f;
+        transition: transform 0.2s;
+      }
+      .cat-item:hover .cat-arrow {
+        transform: translateX(4px);
+        color: #8f909a;
+      }
+
+      /* FAQs */
+      .faq-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .faq-item {
+        background-color: #1c1b1b;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+      .faq-item:hover {
+        background-color: #201f1f;
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+      .faq-q {
+        font-size: 15px;
+        font-weight: 500;
+        color: #e5e2e1;
+        margin: 0;
+      }
+
+      /* Live Chat CTA */
+      .live-chat-card {
+        background: #1c1b1b;
+        border: 1px solid #334576;
+        border-radius: 20px;
+        padding: 28px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        position: relative;
+        overflow: hidden;
+      }
+      .live-chat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #4b5d90, #b3c5ff);
+      }
+      .chat-content-wrapper {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        z-index: 1;
+      }
+      .chat-icon {
+        background-color: rgba(179, 197, 255, 0.1);
+        color: #b3c5ff;
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .chat-info h3 {
+        margin: 0 0 6px 0;
+        font-size: 20px;
+        font-weight: 700;
+        color: #dbe2ff;
+      }
+      .chat-info p {
+        margin: 0;
+        font-size: 15px;
+        color: #8f909a;
+        line-height: 1.5;
+      }
+      .chat-btn {
+        background-color: #b3c5ff;
+        color: #011849;
+        border: none;
+        padding: 16px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 16px;
+        cursor: pointer;
+        width: 100%;
+        transition:
+          background-color 0.2s,
+          transform 0.1s;
+        z-index: 1;
+      }
+      .chat-btn:hover {
+        background-color: #dbe2ff;
+      }
+      .chat-btn:active {
+        transform: scale(0.98);
+      }
+
+      /* Bottom Nav */
+      .bottom-nav {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 40px);
+        max-width: 856px;
+        background-color: #1c1b1b;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 24px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 12px 16px;
+        z-index: 50;
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5);
+      }
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #8f909a;
+        padding: 8px 16px;
+        border-radius: 16px;
+        text-decoration: none;
+        transition: all 0.2s;
+        min-width: 64px;
+      }
+      .nav-item.active {
+        background-color: rgba(179, 197, 255, 0.1);
+        color: #b3c5ff;
+      }
+      .nav-item:hover:not(.active) {
+        background-color: #2a2a2a;
+        color: #e5e2e1;
+      }
+      .nav-label {
+        font-size: 12px;
+        font-weight: 500;
+        margin-top: 4px;
+      }
+
+      @media (min-width: 768px) {
+        .content-area {
+          padding: 40px;
+        }
+        .category-list {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 16px;
+        }
+        .live-chat-card {
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          padding: 32px;
+        }
+        .chat-btn {
+          width: auto;
+          min-width: 160px;
+        }
+        .bottom-nav {
+          display: none;
+        }
+      }
+    </style>
+    <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- TopAppBar -->
+      <header class="header">
+        <button class="icon-btn">
+          <span
+            class="material-symbols-outlined"
+            style="font-variation-settings: &quot;FILL&quot; 0"
+            >arrow_back</span
+          >
+        </button>
+        <h1 class="header-title">Support Center</h1>
+        <button class="icon-btn">
+          <span
+            class="material-symbols-outlined"
+            style="font-variation-settings: &quot;FILL&quot; 0"
+            >more_vert</span
+          >
+        </button>
+      </header>
+      <main class="content-area">
+        <!-- Search -->
+        <div class="search-container">
+          <span
+            class="material-symbols-outlined search-icon"
+            style="font-variation-settings: &quot;FILL&quot; 0"
+            >search</span
+          >
+          <input
+            class="search-input"
+            placeholder="Search FAQs or issues..."
+            type="text"
+          />
+        </div>
+        <!-- Categories -->
+        <section>
+          <h2 class="section-title">Topics</h2>
+          <div class="category-list">
+            <div class="cat-item">
+              <div class="cat-icon-wrapper">
+                <span
+                  class="material-symbols-outlined"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >payments</span
+                >
+              </div>
+              <div class="cat-content">
+                <h3 class="cat-title">Payments</h3>
+                <p class="cat-count">12 Articles</p>
+              </div>
+              <span class="material-symbols-outlined cat-arrow"
+                >chevron_right</span
+              >
+            </div>
+            <div class="cat-item">
+              <div class="cat-icon-wrapper">
+                <span
+                  class="material-symbols-outlined"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >person</span
+                >
+              </div>
+              <div class="cat-content">
+                <h3 class="cat-title">My Account</h3>
+                <p class="cat-count">8 Articles</p>
+              </div>
+              <span class="material-symbols-outlined cat-arrow"
+                >chevron_right</span
+              >
+            </div>
+            <div class="cat-item">
+              <div class="cat-icon-wrapper">
+                <span
+                  class="material-symbols-outlined"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >bolt</span
+                >
+              </div>
+              <div class="cat-content">
+                <h3 class="cat-title">Recharge Issues</h3>
+                <p class="cat-count">24 Articles</p>
+              </div>
+              <span class="material-symbols-outlined cat-arrow"
+                >chevron_right</span
+              >
+            </div>
+            <div class="cat-item">
+              <div class="cat-icon-wrapper">
+                <span
+                  class="material-symbols-outlined"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >build</span
+                >
+              </div>
+              <div class="cat-content">
+                <h3 class="cat-title">Technical Help</h3>
+                <p class="cat-count">15 Articles</p>
+              </div>
+              <span class="material-symbols-outlined cat-arrow"
+                >chevron_right</span
+              >
+            </div>
+          </div>
+        </section>
+        <!-- Top Questions -->
+        <section class="faq-section">
+          <h2 class="section-title">Top Questions</h2>
+          <div class="faq-list">
+            <div class="faq-item">
+              <p class="faq-q">Why did my recharge fail?</p>
+              <span class="material-symbols-outlined" style="color: #8f909a"
+                >expand_more</span
+              >
+            </div>
+            <div class="faq-item">
+              <p class="faq-q">How to top up my wallet?</p>
+              <span class="material-symbols-outlined" style="color: #8f909a"
+                >expand_more</span
+              >
+            </div>
+            <div class="faq-item">
+              <p class="faq-q">Where is my transaction receipt?</p>
+              <span class="material-symbols-outlined" style="color: #8f909a"
+                >expand_more</span
+              >
+            </div>
+            <div class="faq-item">
+              <p class="faq-q">Can I cancel a scheduled payment?</p>
+              <span class="material-symbols-outlined" style="color: #8f909a"
+                >expand_more</span
+              >
+            </div>
+          </div>
+        </section>
+        <section>
+          <h2 class="section-title">More Ways to Connect</h2>
+          <div style="display: flex; flex-direction: column; gap: 12px">
+            <div class="cat-item" style="border-radius: 8px; cursor: default">
+              <div class="cat-icon-wrapper" style="border-radius: 8px">
+                <span
+                  class="material-symbols-outlined"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >mail</span
+                >
+              </div>
+              <div class="cat-content">
+                <h3 class="cat-title">Email Us</h3>
+                <p class="cat-count" style="color: #b3c5ff">
+                  support@autocharge.pro
+                </p>
+              </div>
+            </div>
+            <div class="cat-item" style="border-radius: 8px; cursor: default">
+              <div class="cat-icon-wrapper" style="border-radius: 8px">
+                <span
+                  class="material-symbols-outlined"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >call</span
+                >
+              </div>
+              <div class="cat-content">
+                <h3 class="cat-title">Call Us</h3>
+                <p class="cat-count" style="color: #b3c5ff">
+                  +1 (800) AUTO-CHG
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- Bottom Action -->
+        <section>
+          <div class="live-chat-card">
+            <div class="chat-content-wrapper">
+              <div class="chat-icon">
+                <span
+                  class="material-symbols-outlined"
+                  style="font-variation-settings: &quot;FILL&quot; 1"
+                  >support_agent</span
+                >
+              </div>
+              <div class="chat-info">
+                <h3 class="">Live Chat</h3>
+                <p class="">
+                  Get instant help from our premium support team, available
+                  24/7.
+                </p>
+              </div>
+            </div>
+            <button class="chat-btn">Start Conversation</button>
+          </div>
+        </section>
+      </main>
+      <!-- BottomNavBar -->
+      <nav class="bottom-nav">
+        <a class="nav-item" href="#">
+          <span class="material-symbols-outlined">home</span>
+          <span class="nav-label">Home</span>
+        </a>
+        <a class="nav-item" href="#">
+          <span class="material-symbols-outlined">account_balance_wallet</span>
+          <span class="nav-label">Wallet</span>
+        </a>
+        <a class="nav-item active" href="#">
+          <span
+            class="material-symbols-outlined"
+            style="font-variation-settings: &quot;FILL&quot; 1"
+            >contact_support</span
+          >
+          <span class="nav-label">Support</span>
+        </a>
+        <a class="nav-item" href="#">
+          <span class="material-symbols-outlined">person</span>
+          <span class="nav-label">Profile</span>
+        </a>
+      </nav>
+    </div>
+  </body>
+</html>

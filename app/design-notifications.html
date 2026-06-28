@@ -1,0 +1,484 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Notifications | AutoCharge Pro</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --background: #131313;
+        --surface: #1b1b1b;
+        --surface-variant: #252525;
+        --primary: #4edea3; /* Emerald Green */
+        --on-primary: #003824;
+        --secondary: #b3c5ff;
+        --on-surface: #e5e2e1;
+        --on-surface-variant: #c5c6d0;
+        --border: rgba(255, 255, 255, 0.08);
+        --error: #ffb4ab;
+        --warning: #ffb95f;
+        --radius: 8px;
+        --margin-mobile: 20px;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: var(--background);
+        color: var(--on-surface);
+        font-family: "Inter", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.5;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Header */
+      header {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 50;
+        background: rgba(19, 19, 19, 0.8);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border);
+        padding: 12px var(--margin-mobile);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .header-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--on-surface);
+      }
+
+      .btn-back {
+        background: none;
+        border: none;
+        color: var(--primary);
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .btn-back:active {
+        background: var(--surface-variant);
+      }
+
+      .btn-text-action {
+        background: none;
+        border: none;
+        color: var(--primary);
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+
+      /* Main Content */
+      main {
+        flex-grow: 1;
+        padding: 80px var(--margin-mobile) 120px;
+        max-width: 600px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      section {
+        margin-bottom: 32px;
+      }
+
+      .section-title {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--on-surface-variant);
+        margin-bottom: 16px;
+        padding-left: 4px;
+      }
+
+      /* Notification Card */
+      .notification-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 16px;
+        margin-bottom: 12px;
+        display: flex;
+        gap: 16px;
+        transition:
+          transform 0.2s ease,
+          border-color 0.2s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .notification-card:active {
+        transform: scale(0.98);
+      }
+
+      .notification-card.unread::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: var(--primary);
+      }
+
+      .icon-container {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--surface-variant);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .content {
+        flex-grow: 1;
+      }
+
+      .header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 4px;
+      }
+
+      .title {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--on-surface);
+      }
+
+      .time {
+        font-size: 12px;
+        color: var(--on-surface-variant);
+      }
+
+      .description {
+        font-size: 14px;
+        color: var(--on-surface-variant);
+        margin-bottom: 8px;
+      }
+
+      .badge-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--primary);
+      }
+
+      .status-text {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--primary);
+      }
+
+      /* Specific Status Colors */
+      .status-success {
+        color: var(--primary);
+      }
+      .status-pending {
+        color: var(--warning);
+      }
+      .status-failed {
+        color: var(--error);
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: var(--on-primary);
+        border: none;
+        padding: 8px 16px;
+        border-radius: var(--radius);
+        font-size: 14px;
+        font-weight: 600;
+        margin-top: 8px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      /* Navigation Bar */
+      nav {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 40px);
+        max-width: 400px;
+        background: rgba(27, 27, 27, 0.85);
+        backdrop-filter: blur(24px);
+        border: 1px solid var(--border);
+        border-radius: 40px;
+        display: flex;
+        justify-content: space-around;
+        padding: 12px 8px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        z-index: 100;
+      }
+
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: var(--on-surface-variant);
+        opacity: 0.6;
+        gap: 4px;
+      }
+
+      .nav-item.active {
+        color: var(--primary);
+        opacity: 1;
+      }
+
+      .nav-item span:first-child {
+        font-size: 24px;
+      }
+
+      .nav-item span:last-child {
+        font-size: 10px;
+        font-weight: 500;
+      }
+
+      /* Utility */
+      .fill {
+        font-variation-settings: "FILL" 1;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-left">
+        <button class="btn-back">
+          <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <h1 class="header-title">Notifications</h1>
+      </div>
+      <button class="btn-text-action" id="markRead">Mark all as read</button>
+    </header>
+    <main>
+      <!-- TODAY -->
+      <section>
+        <h2 class="section-title">Today</h2>
+        <!-- Success Alert -->
+        <div class="notification-card unread">
+          <div class="icon-container status-success">
+            <span class="material-symbols-outlined fill">bolt</span>
+          </div>
+          <div class="content">
+            <div class="header-row">
+              <h3 class="title">Recharge Successful</h3>
+              <span class="time">2m ago</span>
+            </div>
+            <p class="description">
+              Recharge of $50 for +1 (555) 012-3456 was successful.
+            </p>
+            <div class="badge-row">
+              <div class="status-dot"></div>
+              <span class="status-text">New</span>
+            </div>
+          </div>
+        </div>
+        <!-- Pending Alert -->
+        <div class="notification-card unread">
+          <div class="icon-container status-pending">
+            <span class="material-symbols-outlined">schedule</span>
+          </div>
+          <div class="content">
+            <div class="header-row">
+              <h3 class="title">Recharge Pending</h3>
+              <span class="time">15m ago</span>
+            </div>
+            <p class="description">
+              Recharge for +1 (555) 987-6543 is being processed. This usually
+              takes 2-5 minutes.
+            </p>
+            <div class="badge-row">
+              <div class="status-dot"></div>
+              <span class="status-text">Processing</span>
+            </div>
+          </div>
+        </div>
+        <!-- Netflix Subscription -->
+        <div class="notification-card">
+          <div class="icon-container" style="color: #e50914">
+            <span class="material-symbols-outlined">subscriptions</span>
+          </div>
+          <div class="content">
+            <div class="header-row">
+              <h3 class="title">Netflix Alert</h3>
+              <span class="time">2h ago</span>
+            </div>
+            <p class="description">
+              Subscription expiring in 3 days. Auto-renew is enabled via your
+              wallet balance.
+            </p>
+          </div>
+        </div>
+      </section>
+      <!-- YESTERDAY -->
+      <section>
+        <h2 class="section-title">Yesterday</h2>
+        <!-- Failed Alert -->
+        <div class="notification-card">
+          <div class="icon-container status-failed">
+            <span class="material-symbols-outlined">error</span>
+          </div>
+          <div class="content">
+            <div class="header-row">
+              <h3 class="title">Recharge Failed</h3>
+              <span class="time">1d ago</span>
+            </div>
+            <p class="description">
+              Recharge for +1 (555) 111-2222 failed. Refund initiated to wallet.
+            </p>
+          </div>
+        </div>
+        <!-- Prime Video -->
+        <div class="notification-card">
+          <div class="icon-container" style="color: #00a8e1">
+            <span class="material-symbols-outlined fill">check_circle</span>
+          </div>
+          <div class="content">
+            <div class="header-row">
+              <h3 class="title">Prime Video</h3>
+              <span class="time">1d ago</span>
+            </div>
+            <p class="description">
+              Prime membership successfully renewed for $14.99. Receipt sent to
+              your email.
+            </p>
+          </div>
+        </div>
+        <!-- Upcoming Payment -->
+        <div class="notification-card">
+          <div class="icon-container">
+            <span class="material-symbols-outlined">calendar_month</span>
+          </div>
+          <div class="content">
+            <div class="header-row">
+              <h3 class="title">Upcoming Payment</h3>
+              <span class="time">1d ago</span>
+            </div>
+            <p class="description">
+              Upcoming scheduled recharge for Mom's Mobile in 24 hours.
+            </p>
+          </div>
+        </div>
+      </section>
+      <!-- LAST WEEK -->
+      <section>
+        <h2 class="section-title">Last Week</h2>
+        <!-- Sun NXT -->
+        <div class="notification-card">
+          <div class="icon-container" style="color: #f58220">
+            <span class="material-symbols-outlined">warning</span>
+          </div>
+          <div class="content">
+            <div class="header-row">
+              <h3 class="title">Sun NXT Ended</h3>
+              <span class="time">5d ago</span>
+            </div>
+            <p class="description">
+              Subscription ended. Recharge now to continue watching.
+            </p>
+            <button class="btn-primary">
+              Recharge Now
+              <span class="material-symbols-outlined" style="font-size: 18px"
+                >arrow_forward</span
+              >
+            </button>
+          </div>
+        </div>
+        <!-- Security Alert -->
+        <div class="notification-card">
+          <div class="icon-container status-failed">
+            <span class="material-symbols-outlined">security</span>
+          </div>
+          <div class="content">
+            <div class="header-row">
+              <h3 class="title">Security Alert</h3>
+              <span class="time">6d ago</span>
+            </div>
+            <p class="description">
+              New login detected from a new device in San Francisco, CA.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+    <nav>
+      <a class="nav-item" href="#">
+        <span class="material-symbols-outlined">home</span>
+        <span>Home</span>
+      </a>
+      <a class="nav-item" href="#">
+        <span class="material-symbols-outlined">calendar_today</span>
+        <span>Schedule</span>
+      </a>
+      <a class="nav-item" href="#">
+        <span class="material-symbols-outlined">account_balance_wallet</span>
+        <span>Wallet</span>
+      </a>
+      <a class="nav-item active" href="#">
+        <span class="material-symbols-outlined fill">person</span>
+        <span>Account</span>
+      </a>
+    </nav>
+    <script>
+      document
+        .getElementById("markRead")
+        .addEventListener("click", function () {
+          const unreadCards = document.querySelectorAll(
+            ".notification-card.unread",
+          );
+          unreadCards.forEach((card) => {
+            card.classList.remove("unread");
+            const badge = card.querySelector(".badge-row");
+            if (badge) badge.style.display = "none";
+          });
+          this.style.opacity = "0.5";
+          this.innerText = "All read";
+        });
+    </script>
+  </body>
+</html>

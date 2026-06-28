@@ -1,0 +1,73 @@
+{
+  "today": [
+    {
+      "id": "t1",
+      "title": "Recharge Successful",
+      "time": "2m ago",
+      "description": "Recharge of $50 for +1 (555) 012-3456 was successful.",
+      "status": "new",
+      "unread": true,
+      "icon": "bolt"
+    },
+    {
+      "id": "t2",
+      "title": "Recharge Pending",
+      "time": "15m ago",
+      "description": "Recharge for +1 (555) 987-6543 is being processed. This usually takes 2-5 minutes.",
+      "status": "processing",
+      "unread": true,
+      "icon": "schedule"
+    },
+    {
+      "id": "t3",
+      "title": "Netflix Alert",
+      "time": "2h ago",
+      "description": "Subscription expiring in 3 days. Auto-renew is enabled via your wallet balance.",
+      "icon": "subscriptions",
+      "iconColor": "#e50914"
+    }
+  ],
+  "yesterday": [
+    {
+      "id": "y1",
+      "title": "Recharge Failed",
+      "time": "1d ago",
+      "description": "Recharge for +1 (555) 111-2222 failed. Refund initiated to wallet.",
+      "icon": "error",
+      "unread": false
+    },
+    {
+      "id": "y2",
+      "title": "Prime Video",
+      "time": "1d ago",
+      "description": "Prime membership successfully renewed for $14.99. Receipt sent to your email.",
+      "icon": "check_circle",
+      "iconColor": "#00a8e1"
+    },
+    {
+      "id": "y3",
+      "title": "Upcoming Payment",
+      "time": "1d ago",
+      "description": "Upcoming scheduled recharge for Mom's Mobile in 24 hours.",
+      "icon": "calendar_month"
+    }
+  ],
+  "lastWeek": [
+    {
+      "id": "w1",
+      "title": "Sun NXT Ended",
+      "time": "5d ago",
+      "description": "Subscription ended. Recharge now to continue watching.",
+      "icon": "warning",
+      "iconColor": "#f58220"
+    },
+    {
+      "id": "w2",
+      "title": "Security Alert",
+      "time": "6d ago",
+      "description": "New login detected from a new device in San Francisco, CA.",
+      "icon": "security",
+      "iconColor": null
+    }
+  ]
+}

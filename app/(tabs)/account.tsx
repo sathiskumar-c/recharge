@@ -3,13 +3,19 @@ import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import accountConfig from "../../config/accountConfig";
+import accountData from "../../constants/accountData.json";
 import { accountStyles } from "./account.styles";
 import { C } from "./index.styles";
 
 export default function AccountScreen() {
   const router = useRouter();
-  const [biometricEnabled, setBiometricEnabled] = useState(true);
-  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [biometricEnabled, setBiometricEnabled] = useState(
+    accountData.toggles.biometricEnabled,
+  );
+  const [notificationsEnabled, setNotificationsEnabled] = useState(
+    accountData.toggles.notificationsEnabled,
+  );
 
   return (
     <SafeAreaView style={accountStyles.screen} edges={["top"]}>
@@ -20,9 +26,7 @@ export default function AccountScreen() {
           <Text style={accountStyles.appLogo}>AutoCharge</Text>
         </View>
         <Image
-          source={{
-            uri: "https://lh3.googleusercontent.com/aida-public/AB6AXuDoYrCIoQN_lPwhAsDs1JfW9lMxdL4rSREkdLMYoO85Ddin654--5MPxCfg38q16Lx5doYqxKz1pq2YE0Fl1218LUxyF1-M7s591DngRAgmlVmGVxiD0xSSKQcO4Mg-iCKFRMq0VA0MspA2tq6ORYxpbCxDV6f26gCbl6FduBMxXO53Lzk0X5g3c3jtgRUqJWjfoJ1HxV-jvANNkrKdWnY1gqCtHXt6XfsmgC30yt28u4dIzS4rHKi3zGP5E6F0diLrQGceu2FoGQM",
-          }}
+          source={{ uri: accountData.profile.headerAvatar }}
           style={accountStyles.headerAvatar}
         />
       </View>
@@ -37,9 +41,7 @@ export default function AccountScreen() {
           <View style={accountStyles.profileAvatarWrap}>
             <View style={accountStyles.profileGlow} />
             <Image
-              source={{
-                uri: "https://lh3.googleusercontent.com/aida-public/AB6AXuDQeGDJkR4AiaLgJuK8BkrL1-JImpJW_ESu_sVgppOjGtdIsZKElLtuhAnaPkqzFeRpCyTe1PJ4OK2qiLX6uv6sfBfX3sncp0Wd0UVbxX6OEbGBMNURAAJYASNL97tXjRtEYRJgZ5pGdM8UsDqm0-ld8CALVnRaZsuAHdr6C5xzHZkRVKKryptQ-23c0sWE9nDg-70IZB_Sr1CxQLLv6RfHMCX0pJWpq5SMp-zhFH_1C0fAfLCbEQi3T9zPC_KmheOnzgmMxbpStzc",
-              }}
+              source={{ uri: accountData.profile.avatar }}
               style={accountStyles.profileAvatar}
             />
             <TouchableOpacity
@@ -49,8 +51,12 @@ export default function AccountScreen() {
               <MaterialIcons name="edit" size={18} color={C.background} />
             </TouchableOpacity>
           </View>
-          <Text style={accountStyles.profileName}>Alex</Text>
-          <Text style={accountStyles.profilePhone}>+1 (555) 012-3456</Text>
+          <Text style={accountStyles.profileName}>
+            {accountData.profile.name}
+          </Text>
+          <Text style={accountStyles.profilePhone}>
+            {accountData.profile.phone}
+          </Text>
         </View>
 
         {/* ── Wallet Card ── */}
@@ -64,7 +70,9 @@ export default function AccountScreen() {
               <Text style={[accountStyles.walletBalance, { fontSize: 24 }]}>
                 $
               </Text>
-              <Text style={accountStyles.walletBalance}>142.50</Text>
+              <Text style={accountStyles.walletBalance}>
+                {accountData.wallet.balance}
+              </Text>
             </View>
           </View>
           <TouchableOpacity
@@ -76,194 +84,234 @@ export default function AccountScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* ── Personal Information ── */}
-        <View>
-          <Text style={accountStyles.sectionTitle}>Personal Information</Text>
-          <View style={accountStyles.menuCard}>
-            <TouchableOpacity
-              style={accountStyles.menuItem}
-              onPress={() => router.push("/edit-name")}
-              activeOpacity={0.7}
-            >
-              <View style={accountStyles.menuItemLeft}>
-                <MaterialIcons name="person" size={20} color={C.outline} />
-                <View style={accountStyles.menuItemContent}>
-                  <Text style={accountStyles.menuItemTitle}>Full Name</Text>
-                  <Text style={accountStyles.menuItemSubtitle}>
-                    Alex Henderson
-                  </Text>
-                </View>
-              </View>
-              <MaterialIcons name="chevron-right" size={20} color={C.outline} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[accountStyles.menuItem, accountStyles.menuItemLast]}
-              onPress={() => router.push("/edit-email")}
-              activeOpacity={0.7}
-            >
-              <View style={accountStyles.menuItemLeft}>
-                <MaterialIcons name="mail" size={20} color={C.outline} />
-                <View style={accountStyles.menuItemContent}>
-                  <Text style={accountStyles.menuItemTitle}>Email Address</Text>
-                  <Text style={accountStyles.menuItemSubtitle}>
-                    alex.h@autocharge.pro
-                  </Text>
-                </View>
-              </View>
-              <MaterialIcons name="chevron-right" size={20} color={C.outline} />
-            </TouchableOpacity>
-          </View>
-        </View>
+        {/* Data-driven sections (keeps UI and behavior identical) */}
+        {/**
+         * We keep complex pieces (profile header, wallet, logout) as-is.
+         * The following sections are rendered from `sections` to reduce repetition.
+         */}
+        {(() => {
+          const sections = (accountConfig as { sections: any[] }).sections;
 
-        {/* ── Payment Methods ── */}
-        <View>
-          <Text style={accountStyles.sectionTitle}>Payment Methods</Text>
-          <View style={accountStyles.menuCard}>
-            <View style={accountStyles.menuItem}>
-              <View style={accountStyles.menuItemLeft}>
-                <View
+          function getValue(path: string | undefined, fallback?: any) {
+            if (!path) return fallback;
+            return (
+              path
+                .split(".")
+                .reduce(
+                  (obj: any, key: string) =>
+                    obj && obj[key] !== undefined ? obj[key] : undefined,
+                  accountData,
+                ) ?? fallback
+            );
+          }
+
+          function AccountItem({ item }) {
+            const isLast = !!item.last;
+
+            if (item.type === "visa") {
+              const mask = getValue(item.valueKeys?.mask, item.title);
+              const expiry = getValue(item.valueKeys?.expiry, item.subtitle);
+              return (
+                <View style={accountStyles.menuItem}>
+                  <View style={accountStyles.menuItemLeft}>
+                    <View
+                      style={[
+                        accountStyles.menuItemIcon,
+                        {
+                          backgroundColor: "rgba(255, 255, 255, 0.1)",
+                          borderRadius: 4,
+                        },
+                      ]}
+                    >
+                      <MaterialIcons
+                        name="credit-card"
+                        size={18}
+                        color={C.primary}
+                      />
+                    </View>
+                    <View style={accountStyles.menuItemContent}>
+                      <Text style={accountStyles.menuItemTitle}>{mask}</Text>
+                      <Text style={accountStyles.menuItemSubtitle}>
+                        {expiry}
+                      </Text>
+                    </View>
+                  </View>
+                  <Text style={accountStyles.menuItemBadge}>{item.badge}</Text>
+                </View>
+              );
+            }
+
+            if (item.type === "add-card") {
+              return (
+                <TouchableOpacity
                   style={[
-                    accountStyles.menuItemIcon,
-                    {
-                      backgroundColor: "rgba(255, 255, 255, 0.1)",
-                      borderRadius: 4,
-                    },
+                    accountStyles.addButton,
+                    isLast && accountStyles.menuItemLast,
                   ]}
                 >
-                  <MaterialIcons
-                    name="credit-card"
-                    size={18}
-                    color={C.primary}
-                  />
-                </View>
-                <View style={accountStyles.menuItemContent}>
-                  <Text style={accountStyles.menuItemTitle}>
-                    Visa •••• 4242
-                  </Text>
-                  <Text style={accountStyles.menuItemSubtitle}>
-                    Expires 09/26
-                  </Text>
-                </View>
-              </View>
-              <Text style={accountStyles.menuItemBadge}>Primary</Text>
-            </View>
-            <TouchableOpacity
-              style={[accountStyles.addButton, accountStyles.menuItemLast]}
-            >
-              <MaterialIcons name="add" size={20} color={C.primary} />
-              <Text style={accountStyles.addButtonText}>Add New Card</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+                  <MaterialIcons name="add" size={20} color={C.primary} />
+                  <Text style={accountStyles.addButtonText}>Add New Card</Text>
+                </TouchableOpacity>
+              );
+            }
 
-        {/* ── Security ── */}
-        <View>
-          <Text style={accountStyles.sectionTitle}>Security</Text>
-          <View style={accountStyles.menuCard}>
-            <View style={accountStyles.menuItem}>
-              <View style={accountStyles.menuItemLeft}>
-                <MaterialIcons name="fingerprint" size={20} color={C.outline} />
-                <Text style={accountStyles.menuItemTitle}>
-                  Biometric Unlock
-                </Text>
-              </View>
-              <TouchableOpacity
-                onPress={() => setBiometricEnabled(!biometricEnabled)}
-                style={[
-                  accountStyles.toggleSwitch,
-                  biometricEnabled
-                    ? accountStyles.toggleSwitchOn
-                    : accountStyles.toggleSwitchOff,
-                ]}
-                activeOpacity={0.8}
-              >
+            if (item.type === "toggle") {
+              const stateKey = item.stateKey;
+              const value =
+                stateKey === "biometricEnabled"
+                  ? biometricEnabled
+                  : notificationsEnabled;
+              const toggle = () => {
+                if (stateKey === "biometricEnabled")
+                  setBiometricEnabled(!biometricEnabled);
+                else setNotificationsEnabled(!notificationsEnabled);
+              };
+
+              return (
                 <View
                   style={[
-                    accountStyles.toggleThumb,
-                    biometricEnabled
-                      ? accountStyles.toggleThumbOn
-                      : accountStyles.toggleThumbOff,
+                    accountStyles.menuItem,
+                    isLast && accountStyles.menuItemLast,
                   ]}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={[accountStyles.menuItem, accountStyles.menuItemLast]}>
-              <View style={accountStyles.menuItemLeft}>
-                <MaterialIcons name="vpn-key" size={20} color={C.outline} />
-                <Text style={accountStyles.menuItemTitle}>
-                  Change Security Pin
-                </Text>
-              </View>
-              <MaterialIcons name="chevron-right" size={20} color={C.outline} />
-            </View>
-          </View>
-        </View>
+                >
+                  <View style={accountStyles.menuItemLeft}>
+                    <MaterialIcons
+                      name={item.icon}
+                      size={20}
+                      color={C.outline}
+                    />
+                    <Text style={accountStyles.menuItemTitle}>
+                      {item.label}
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={toggle}
+                    style={[
+                      accountStyles.toggleSwitch,
+                      value
+                        ? accountStyles.toggleSwitchOn
+                        : accountStyles.toggleSwitchOff,
+                    ]}
+                    activeOpacity={0.8}
+                  >
+                    <View
+                      style={[
+                        accountStyles.toggleThumb,
+                        value
+                          ? accountStyles.toggleThumbOn
+                          : accountStyles.toggleThumbOff,
+                      ]}
+                    />
+                  </TouchableOpacity>
+                </View>
+              );
+            }
 
-        {/* ── App Settings ── */}
-        <View>
-          <Text style={accountStyles.sectionTitle}>App Settings</Text>
-          <View style={accountStyles.menuCard}>
-            <View style={accountStyles.menuItem}>
-              <View style={accountStyles.menuItemLeft}>
-                <MaterialIcons name="dark-mode" size={20} color={C.outline} />
-                <Text style={accountStyles.menuItemTitle}>Dark Mode</Text>
-              </View>
-              <Text style={accountStyles.menuItemBadge}>Always On</Text>
-            </View>
-            <View style={[accountStyles.menuItem, accountStyles.menuItemLast]}>
-              <View style={accountStyles.menuItemLeft}>
+            if (item.type === "badge") {
+              return (
+                <View
+                  style={[
+                    accountStyles.menuItem,
+                    isLast && accountStyles.menuItemLast,
+                  ]}
+                >
+                  <View style={accountStyles.menuItemLeft}>
+                    <MaterialIcons
+                      name={item.icon}
+                      size={20}
+                      color={C.outline}
+                    />
+                    <Text style={accountStyles.menuItemTitle}>
+                      {item.label}
+                    </Text>
+                  </View>
+                  <Text style={accountStyles.menuItemBadge}>{item.badge}</Text>
+                </View>
+              );
+            }
+
+            if (item.type === "static") {
+              return (
+                <View
+                  style={[
+                    accountStyles.menuItem,
+                    isLast && accountStyles.menuItemLast,
+                  ]}
+                >
+                  <View style={accountStyles.menuItemLeft}>
+                    <MaterialIcons
+                      name={item.icon}
+                      size={20}
+                      color={C.outline}
+                    />
+                    <Text style={accountStyles.menuItemTitle}>
+                      {item.label}
+                    </Text>
+                  </View>
+                  <MaterialIcons
+                    name={
+                      item.id === "help-center"
+                        ? "open-in-new"
+                        : "chevron-right"
+                    }
+                    size={20}
+                    color={C.outline}
+                  />
+                </View>
+              );
+            }
+
+            // default: link
+            return (
+              <TouchableOpacity
+                style={[
+                  accountStyles.menuItem,
+                  isLast && accountStyles.menuItemLast,
+                ]}
+                onPress={() => item.route && router.push(item.route)}
+                activeOpacity={0.7}
+              >
+                <View style={accountStyles.menuItemLeft}>
+                  <MaterialIcons name={item.icon} size={20} color={C.outline} />
+                  <View style={accountStyles.menuItemContent}>
+                    <Text style={accountStyles.menuItemTitle}>
+                      {item.label}
+                    </Text>
+                    {item.valueKey ? (
+                      <Text style={accountStyles.menuItemSubtitle}>
+                        {getValue(item.valueKey, item.subtitle)}
+                      </Text>
+                    ) : item.subtitle ? (
+                      <Text style={accountStyles.menuItemSubtitle}>
+                        {item.subtitle}
+                      </Text>
+                    ) : null}
+                  </View>
+                </View>
                 <MaterialIcons
-                  name="notifications"
+                  name="chevron-right"
                   size={20}
                   color={C.outline}
                 />
-                <Text style={accountStyles.menuItemTitle}>Notifications</Text>
-              </View>
-              <TouchableOpacity
-                onPress={() => setNotificationsEnabled(!notificationsEnabled)}
-                style={[
-                  accountStyles.toggleSwitch,
-                  notificationsEnabled
-                    ? accountStyles.toggleSwitchOn
-                    : accountStyles.toggleSwitchOff,
-                ]}
-                activeOpacity={0.8}
-              >
-                <View
-                  style={[
-                    accountStyles.toggleThumb,
-                    notificationsEnabled
-                      ? accountStyles.toggleThumbOn
-                      : accountStyles.toggleThumbOff,
-                  ]}
-                />
               </TouchableOpacity>
-            </View>
-          </View>
-        </View>
+            );
+          }
 
-        {/* ── Support & Legal ── */}
-        <View>
-          <Text style={accountStyles.sectionTitle}>Support & Legal</Text>
-          <View style={accountStyles.menuCard}>
-            <View style={accountStyles.menuItem}>
-              <View style={accountStyles.menuItemLeft}>
-                <MaterialIcons name="help-center" size={20} color={C.outline} />
-                <Text style={accountStyles.menuItemTitle}>Help Center</Text>
+          return sections.map((section) => (
+            <View key={section.title}>
+              <Text style={accountStyles.sectionTitle}>{section.title}</Text>
+              <View style={accountStyles.menuCard}>
+                {section.items.map((item) => (
+                  <React.Fragment key={item.id}>
+                    <AccountItem item={item} />
+                    {/* For items that rendered their own menuCard (like visa), avoid double wrappers */}
+                    {item.type === "visa" ? null : null}
+                  </React.Fragment>
+                ))}
               </View>
-              <MaterialIcons name="open-in-new" size={20} color={C.outline} />
             </View>
-            <View style={[accountStyles.menuItem, accountStyles.menuItemLast]}>
-              <View style={accountStyles.menuItemLeft}>
-                <MaterialIcons name="description" size={20} color={C.outline} />
-                <Text style={accountStyles.menuItemTitle}>
-                  Terms of Service
-                </Text>
-              </View>
-              <MaterialIcons name="chevron-right" size={20} color={C.outline} />
-            </View>
-          </View>
-        </View>
+          ));
+        })()}
 
         {/* ── Logout ── */}
         <View style={accountStyles.logoutSection}>
@@ -274,7 +322,9 @@ export default function AccountScreen() {
             <MaterialIcons name="logout" size={20} color={C.error} />
             <Text style={accountStyles.logoutText}>Logout from AutoCharge</Text>
           </TouchableOpacity>
-          <Text style={accountStyles.versionText}>Version 4.2.0-pro</Text>
+          <Text style={accountStyles.versionText}>
+            Version {accountData.version}
+          </Text>
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -7,12 +7,50 @@ import {
   Pressable,
   SafeAreaView,
   ScrollView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import { labels } from "../../config/plansConfig";
 import { C } from "../view-plans.styles";
+import styles from "./PlanDetailsModal.styles";
+
+// icon color map and curated labels are UI-specific logic kept in this component
+const colorMap: Record<string, string> = {
+  sports_esports: "#00b47d",
+  movie: C.error,
+  star: "#b3c5ff",
+  play_arrow: C.error,
+  shopping_cart: C.primary,
+  tv: "#ffb95f",
+  call: C.secondary,
+  mail: "#ffb95f",
+  public: "#00b47d",
+  data_saver: C.tertiary,
+  network_check: C.secondary,
+  memory: C.primary,
+  verified: "#b3c5ff",
+  cloud_done: "#b3c5ff",
+  movie_filter: C.error,
+  music_note: "#b3c5ff",
+  play_circle: C.primary,
+};
+
+const getIconColor = (icon: string) => colorMap[icon] || C.primary;
+
+const curatedLabelMap: Record<string, string> = {
+  play_arrow: "JioTV",
+  cloud_done: "Cloud",
+  movie: "Cinema",
+  movie_filter: "Cinema",
+  music_note: "Saavn",
+  sports_esports: "Games",
+  shopping_cart: "Shopping",
+  tv: "TV",
+  play_circle: "JioTV",
+};
+
+const getCuratedLabel = (icon: string) => curatedLabelMap[icon] || "Service";
 
 interface Plan {
   id: string;
@@ -21,12 +59,34 @@ interface Plan {
   validity: string;
   data: string;
   benefits?: string[];
+  benefitKeys?: string[];
   serviceIcons?: string[];
   serviceIconsMore?: number;
   label?: string;
   labelColor?: string;
   tags?: string[];
 }
+
+const getFallbackIcons = (plan: Plan): string[] => {
+  if (plan.serviceIcons && plan.serviceIcons.length > 0)
+    return plan.serviceIcons;
+  const icons: string[] = [];
+  if (plan.tags) {
+    if (plan.tags.includes("ott") || plan.tags.includes("entertainment")) {
+      icons.push("play_arrow", "tv");
+    }
+    if (plan.tags.includes("5g")) {
+      icons.push("network_check", "memory");
+    }
+  }
+  if (plan.benefits && plan.benefits.length > 0) {
+    icons.push("memory");
+  }
+  if (icons.length === 0) {
+    icons.push("memory", "network_check");
+  }
+  return icons.slice(0, 3);
+};
 
 export default function PlanDetailsModal({
   visible,
@@ -39,8 +99,6 @@ export default function PlanDetailsModal({
   onClose: () => void;
   onRecharge: (plan: Plan) => void;
 }) {
-  if (!plan) return null;
-
   const pulse = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -67,58 +125,12 @@ export default function PlanDetailsModal({
     outputRange: [6, 24],
   });
 
-  const colorMap: Record<string, string> = {
-    sports_esports: "#00b47d",
-    movie: C.error,
-    star: "#b3c5ff",
-    play_arrow: C.error,
-    shopping_cart: C.primary,
-    tv: "#ffb95f",
-    call: C.secondary,
-    mail: "#ffb95f",
-    public: "#00b47d",
-    data_saver: C.tertiary,
-    network_check: C.secondary,
-    memory: C.primary,
-    verified: "#b3c5ff",
-    cloud_done: "#b3c5ff",
-    movie_filter: C.error,
-    music_note: "#b3c5ff",
-    play_circle: C.primary,
-  };
-
-  const getIconColor = (icon: string) => colorMap[icon] || C.primary;
-
-  function getFallbackIcons(p: Plan) {
-    const out: string[] = [];
-    if (p.tags) {
-      if (p.tags.includes("ott") || p.tags.includes("entertainment"))
-        out.push("play_arrow", "tv");
-      if (p.tags.includes("5g")) out.push("network_check");
-    }
-    if (p.benefits && p.benefits.length > 0) out.push("memory");
-    if (out.length === 0) out.push("memory", "network_check");
-    return out.slice(0, 4);
-  }
+  if (!plan) return null;
 
   const icons =
     plan.serviceIcons && plan.serviceIcons.length > 0
       ? plan.serviceIcons
       : getFallbackIcons(plan);
-
-  const curatedLabelMap: Record<string, string> = {
-    play_arrow: "JioTV",
-    cloud_done: "Cloud",
-    movie: "Cinema",
-    movie_filter: "Cinema",
-    music_note: "Saavn",
-    sports_esports: "Games",
-    shopping_cart: "Shopping",
-    tv: "TV",
-    play_circle: "JioTV",
-  };
-
-  const getCuratedLabel = (icon: string) => curatedLabelMap[icon] || "Service";
 
   return (
     <Modal visible={visible} transparent animationType="slide">
@@ -130,7 +142,7 @@ export default function PlanDetailsModal({
           </View>
 
           <View style={styles.header}>
-            <Text style={styles.title}>Plan Details</Text>
+            <Text style={styles.title}>{labels.title}</Text>
             <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
               <MaterialIcons name="close" size={20} color={C.onSurface} />
             </TouchableOpacity>
@@ -155,20 +167,22 @@ export default function PlanDetailsModal({
                       size={14}
                       color={getIconColor("verified") as any}
                     />
-                    <Text style={styles.badgeText}>Active Membership</Text>
+                    <Text style={styles.badgeText}>
+                      {labels.activeMembershipBadge}
+                    </Text>
                   </View>
                 </View>
 
                 <View style={styles.metricGrid}>
                   <View style={styles.vaultItem}>
-                    <Text style={styles.metricLabel}>Duration</Text>
+                    <Text style={styles.metricLabel}>{labels.duration}</Text>
                     <Text style={styles.metricValue}>{plan.validity}</Text>
                     <View
                       style={[styles.metricAccentBar, styles.bgPrimaryBar]}
                     />
                   </View>
                   <View style={styles.vaultItem}>
-                    <Text style={styles.metricLabel}>Daily Limit</Text>
+                    <Text style={styles.metricLabel}>{labels.dailyLimit}</Text>
                     <Text style={styles.metricValue}>{plan.data}</Text>
                     <View
                       style={[styles.metricAccentBar, styles.bgSecondaryBar]}
@@ -180,7 +194,7 @@ export default function PlanDetailsModal({
 
             <View style={styles.sectionDividerArea}>
               <View style={styles.dividerLine} />
-              <Text style={styles.sectionLabel}>Curated Suites</Text>
+              <Text style={styles.sectionLabel}>{labels.curatedSuites}</Text>
               <View style={styles.dividerLine} />
             </View>
 
@@ -200,72 +214,51 @@ export default function PlanDetailsModal({
             </View>
 
             <View style={styles.sectionDividerAreaSingle}>
-              <Text style={styles.sectionLabel}>Infrastructure Access</Text>
+              <Text style={styles.sectionLabel}>
+                {labels.infrastructureAccess}
+              </Text>
             </View>
 
             <View style={styles.benefitList}>
-              <View style={styles.benefitCard}>
-                <View style={styles.benefitIconBox}>
-                  <Text style={{ color: C.secondary, fontWeight: "800" }}>
-                    5G
-                  </Text>
-                </View>
-                <View style={styles.benefitContent}>
-                  <Text style={styles.benefitTitle}>Unlimited True 5G</Text>
-                  <Text style={styles.benefitSubtitle}>
-                    Premier low-latency bandwidth
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.benefitCard}>
-                <View style={styles.benefitIconBox}>
-                  <MaterialIcons
-                    name="settings_phone"
-                    size={24}
-                    color={C.primary}
-                  />
-                </View>
-                <View style={styles.benefitContent}>
-                  <Text style={styles.benefitTitle}>HD Voice Calls</Text>
-                  <Text style={styles.benefitSubtitle}>
-                    Unlimited nationwide crystal-clear calling
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.benefitCard}>
-                <View style={styles.benefitIconBox}>
-                  <MaterialIcons
-                    name="all_inbox"
-                    size={24}
-                    color={C.onSurface}
-                  />
-                </View>
-                <View style={styles.benefitContent}>
-                  <Text style={styles.benefitTitle}>Digital Messaging</Text>
-                  <Text style={styles.benefitSubtitle}>
-                    100 SMS quota per cycle
-                  </Text>
-                </View>
-              </View>
-            </View>
-
-            <View style={styles.finePrintCard}>
-              <MaterialIcons name="info" size={16} color={C.onSurfaceVariant} />
-              <View style={styles.finePrintTextWrap}>
-                <Text style={styles.finePrintText}>
-                  • FUP applies: Data speed resets to 64 Kbps after daily quota.
-                </Text>
-                <Text style={styles.finePrintText}>
-                  • 5G availability is subject to network coverage and
-                  compatible devices.
-                </Text>
-                <Text style={styles.finePrintText}>
-                  • All plans include regulatory taxes and standard service
-                  agreements.
-                </Text>
-              </View>
+              {(() => {
+                const planKeys = (plan as any).benefitKeys || [];
+                const defs =
+                  Array.isArray(planKeys) && planKeys.length > 0
+                    ? labels.benefits
+                        .filter((bb: any) => planKeys.includes(bb.key))
+                        .sort(
+                          (a: any, b: any) =>
+                            (a.priority || 0) - (b.priority || 0),
+                        )
+                    : labels.benefits.slice(0, 3);
+                return defs.map((b: any, i: number) => (
+                  <View key={b.key || i} style={styles.benefitCard}>
+                    <View style={styles.benefitIconBox}>
+                      {i === 0 ? (
+                        <Text style={{ color: C.secondary, fontWeight: "800" }}>
+                          {b.short}
+                        </Text>
+                      ) : i === 1 ? (
+                        <MaterialIcons
+                          name="settings_phone"
+                          size={24}
+                          color={C.primary}
+                        />
+                      ) : (
+                        <MaterialIcons
+                          name="all_inbox"
+                          size={24}
+                          color={C.onSurface}
+                        />
+                      )}
+                    </View>
+                    <View style={styles.benefitContent}>
+                      <Text style={styles.benefitTitle}>{b.title}</Text>
+                      <Text style={styles.benefitSubtitle}>{b.subtitle}</Text>
+                    </View>
+                  </View>
+                ));
+              })()}
             </View>
           </ScrollView>
 
@@ -288,10 +281,10 @@ export default function PlanDetailsModal({
                 >
                   <View>
                     <Text style={styles.payButtonLabel}>
-                      Authorize Transaction
+                      {labels.authorizeTransaction}
                     </Text>
                     <Text style={styles.payButtonValue}>
-                      Pay ₹{plan.price}.00
+                      {labels.payPrefix} ₹{plan.price}.00
                     </Text>
                   </View>
                   <View style={styles.payButtonIcon}>
@@ -310,254 +303,3 @@ export default function PlanDetailsModal({
     </Modal>
   );
 }
-
-const styles = StyleSheet.create({
-  safe: { flex: 1, justifyContent: "flex-end" },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0,0,0,0.6)",
-    zIndex: 40,
-  },
-  sheet: {
-    zIndex: 50,
-    backgroundColor: C.surfaceContainer || "#0e0e0e",
-    borderTopLeftRadius: 32,
-    borderTopRightRadius: 32,
-    maxHeight: "92%",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: -12 },
-    shadowOpacity: 0.6,
-    elevation: 20,
-    borderTopWidth: 1,
-    borderTopColor: "rgba(255,255,255,0.06)",
-  },
-  dragHandleContainer: {
-    display: "flex",
-    alignItems: "center",
-    paddingTop: 16,
-    paddingBottom: 4,
-  },
-  dragHandle: {
-    width: 40,
-    height: 6,
-    borderRadius: 999,
-    backgroundColor: "rgba(255,255,255,0.04)",
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "rgba(255,255,255,0.06)",
-  },
-  title: { fontSize: 24, fontWeight: "800", color: C.onSurface },
-  closeBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: C.surfaceContainerHigh || "rgba(255,255,255,0.02)",
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.06)",
-  },
-  content: { paddingHorizontal: 20, paddingBottom: 160, paddingTop: 8 },
-  obsidianCard: {
-    backgroundColor: C.surfaceContainerLow || "#1c1b1b",
-    borderRadius: 24,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.06)",
-    marginBottom: 24,
-  },
-  pricingHero: { display: "flex", gap: 24 },
-  priceDisplay: { flexDirection: "row", alignItems: "baseline", gap: 6 },
-  priceAmount: {
-    fontSize: 48,
-    fontWeight: "800",
-    color: C.primary,
-    lineHeight: 48,
-  },
-  pricePeriod: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: C.onSurfaceVariant,
-    marginLeft: 6,
-  },
-  badgeActive: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    backgroundColor: "rgba(179,197,255,0.06)",
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 999,
-    marginTop: 12,
-    borderWidth: 1,
-    borderColor: "rgba(179,197,255,0.2)",
-  },
-  badgeText: {
-    fontSize: 11,
-    fontWeight: "700",
-    textTransform: "uppercase",
-    letterSpacing: 1,
-    color: "rgba(179,197,255,0.9)",
-  },
-  metricGrid: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 16,
-  },
-  vaultItem: {
-    flex: 1,
-    backgroundColor: C.surface || "#131313",
-    borderRadius: 16,
-    padding: 14,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.04)",
-    marginRight: 12,
-  },
-  metricLabel: {
-    fontSize: 10,
-    textTransform: "uppercase",
-    fontWeight: "800",
-    color: C.onSurfaceVariant,
-  },
-  metricValue: {
-    fontSize: 18,
-    fontWeight: "800",
-    color: C.onSurface,
-    marginTop: 6,
-  },
-  metricAccentBar: { height: 2, width: 32, marginTop: 8, borderRadius: 999 },
-  bgPrimaryBar: { backgroundColor: "rgba(219,226,255,0.4)" },
-  bgSecondaryBar: { backgroundColor: "rgba(78,222,163,0.4)" },
-  sectionDividerArea: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    marginBottom: 12,
-  },
-  sectionDividerAreaSingle: { marginTop: 12, marginBottom: 12 },
-  dividerLine: { flex: 1, height: 1, backgroundColor: "rgba(69,70,79,0.5)" },
-  sectionLabel: {
-    fontSize: 10,
-    fontWeight: "800",
-    color: C.onSurfaceVariant,
-    textTransform: "uppercase",
-    letterSpacing: 2,
-    textAlign: "center",
-  },
-  iconGrid: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 8,
-    marginBottom: 24,
-  },
-  iconUnit: { alignItems: "center" },
-  iconContainer: {
-    width: 56,
-    height: 56,
-    borderRadius: 16,
-    backgroundColor: C.surface || "#131313",
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.05)",
-  },
-  iconText: {
-    fontSize: 11,
-    fontWeight: "700",
-    marginTop: 8,
-    color: C.onSurface,
-  },
-  benefitList: { marginTop: 8, marginBottom: 8 },
-  benefitCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 16,
-    backgroundColor: C.surfaceContainerLow || "#1c1b1b",
-    padding: 16,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.06)",
-    marginBottom: 12,
-  },
-  benefitIconBox: {
-    width: 48,
-    height: 48,
-    borderRadius: 12,
-    backgroundColor: C.surfaceContainerHighest || "#353534",
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.05)",
-  },
-  benefitContent: { flex: 1 },
-  benefitTitle: { fontSize: 14, fontWeight: "700", color: C.onSurface },
-  benefitSubtitle: { fontSize: 12, color: C.onSurfaceVariant, marginTop: 4 },
-  finePrintCard: {
-    flexDirection: "row",
-    gap: 8,
-    backgroundColor: C.surfaceContainerLow || "#1c1b1b",
-    padding: 16,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.06)",
-    marginTop: 16,
-    marginBottom: 28,
-  },
-  finePrintTextWrap: { marginLeft: 6 },
-  finePrintText: {
-    color: C.onSurfaceVariant,
-    fontSize: 11,
-    lineHeight: 18,
-    marginBottom: 6,
-  },
-  footerAction: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    padding: 20,
-    backgroundColor: C.surfaceContainer || "#0e0e0e",
-    borderTopWidth: 1,
-    borderTopColor: "rgba(255,255,255,0.06)",
-    zIndex: 60,
-  },
-  payButton: {
-    width: "100%",
-    height: 64,
-    borderRadius: 16,
-    overflow: "hidden",
-    shadowColor: "#0055d5",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    elevation: 8,
-  },
-  payButtonInner: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-  },
-  payButtonLabel: {
-    fontSize: 11,
-    fontWeight: "700",
-    color: "rgba(255,255,255,0.9)",
-    textTransform: "uppercase",
-    letterSpacing: 1,
-  },
-  payButtonValue: { fontSize: 20, fontWeight: "800", color: "white" },
-  payButtonIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "rgba(255,255,255,0.05)",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
